@@ -1,15 +1,15 @@
 
 .normal {
   font-family: Georgia, sans-serif;
-  margin-top: 3em;
+  margin-top: 10em;
   text-align: center;
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: 4rem;
   font-weight: normal;
-  letter-spacing: -1px;
-  color: brown
+  letter-spacing: 30px;
+  color:green
 }
 
 /* .welcome {
@@ -18,21 +18,13 @@
   background-size: 388px 328px;
 } */
 
-/* .list {
-  font-size: 1.2em;
-  margin-top: 1.8em;
+.list {
+  font-size: 1.5em;
+  margin-top: 2em;
   list-style: none;
-  line-height: 1.5em;
+  line-height: 2em;
 }
 
-.list code {
+/* .list code {
   background: #f7f7f7;
 } */
-
-.title two {
-  line-height: 0em;
-  /* line- */
-  font-size: 2.0rem;
-  font-weight: normal;
-  letter-spacing: 1px;
-}

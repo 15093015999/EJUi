@@ -13,3 +13,6 @@
     font-weight: normal;
     letter-spacing: 3px;
 }
+.ant-table-small > .ant-table-content > .ant-table-body{
+    margin: 0;
+}
