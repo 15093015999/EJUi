@@ -1,0 +1,15 @@
+
+.customer{
+    color:blue;
+    border-radius:Spx; 
+    padding : 1em;
+    
+}
+
+.title {
+    line-height: 2em;
+    /* line- */
+    font-size: 2.0rem;
+    font-weight: normal;
+    letter-spacing: 3px;
+}

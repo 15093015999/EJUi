@@ -7,14 +7,15 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "antd": "^3.19.3",
     "axios": "^0.19.0",
     "dva": "^2.4.1",
     "qs": "^6.7.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "babel-plugin-dva-hmr": "^0.3.2"
   },
   "devDependencies": {
-    "babel-plugin-dva-hmr": "^0.3.2",
     "eslint": "^4.14.0",
     "eslint-config-umi": "^0.1.1",
     "eslint-plugin-flowtype": "^2.34.1",
