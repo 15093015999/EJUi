@@ -9,15 +9,16 @@
   font-size: 2.5rem;
   font-weight: normal;
   letter-spacing: -1px;
+  color: brown
 }
 
-.welcome {
+/* .welcome {
   height: 328px;
   background: url(../assets/yay.jpg) no-repeat center 0;
   background-size: 388px 328px;
-}
+} */
 
-.list {
+/* .list {
   font-size: 1.2em;
   margin-top: 1.8em;
   list-style: none;
@@ -26,4 +27,12 @@
 
 .list code {
   background: #f7f7f7;
+} */
+
+.title two {
+  line-height: 0em;
+  /* line- */
+  font-size: 2.0rem;
+  font-weight: normal;
+  letter-spacing: 1px;
 }
