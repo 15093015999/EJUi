@@ -25,9 +25,9 @@ class CategoryPage extends React.Component {
 
   //封装查询用户
   handlerLoad() {
-    axios.get("/category/findAll")
+    axios.get("/category/selectByExample")
       .then((result) => {
-        //console.log('查询到的数据为：',result.data);
+        console.log('查询到的数据为：',result.data);
         //将查询到的数据设置到state中
         this.setState({
           list: result.data
