@@ -2,9 +2,10 @@
 
 import React from 'react';
 import styles from './CustomerPage.css';
-import { Button, Table, Icon, Popconfirm, message } from 'antd';
+import { Button, Table, Icon, Popconfirm, message, Modal } from 'antd';
 import axios from '../utils/axios';
 import CustomerForm from './CustomerForm';
+
 
 
 class CustomerPage extends React.Component {
@@ -26,14 +27,15 @@ class CustomerPage extends React.Component {
 
   //封装查询用户
   handlerLoad() {
+    this.setState({loading:true});
     axios.get("/customer/findAll")
       .then((result) => {
         //console.log('查询到的数据为：',result.data);
         //将查询到的数据设置到state中
-        this.setState({
-          list: result.data,
-          loading: false
-        })
+        this.setState({list: result.data,})
+      })
+      .finally(()=>{
+        this.setState({loading: false})    
       })
   }
   //删除用户
@@ -65,35 +67,58 @@ class CustomerPage extends React.Component {
   onSelectChange = selectedRowKeys => {
     this.setState({ selectedRowKeys });
   }
+  //取消添加
   handleCancel = () => {
     this.setState({ visible: false });
   }
+  //确认添加
   handleCreate = () => {
     const form = this.formRef.props.form;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-      axios.post("/customer/save")
+      // 表单校验完成后与后台通信进行保存
+      axios.post("/customer/saveOrUpdate", values)
         .then((result) => {
           message.success(result.statusText)
+          this.handlerLoad();
         })
+      // 重置表单
       form.resetFields();
+      // 关闭模态框
       this.setState({ visible: false });
+      this.handlerLoad();
     });
   }
+  // 将子组件的引用在父组件中进行保存，方便后期调用
   saveFormRef = formRef => {
     this.formRef = formRef;
   }
-  //
+  //添加用户
   toAdd() {
-    this.setState({ visible: true })
+    // 将默认值置空,模态框打开
+    this.setState({ customer: {}, visible: true })
   };
-  // toEdit() {
-
-  // }
+  //更新用户
+  toEdit(record) {
+    // 更前先先把要更新的数据设置到state中
+    this.setState({ customer: record })
+    // 将record值绑定表单中
+    this.setState({ visible: true })
+  }
 
   render() {
+    //tuichu
+    const confirm = Modal.confirm;
+    function showConfirm() {
+      confirm({
+        title: '确认退出吗？',
+        // content: 'Some descriptions',
+        onOk() {console.log('是');},
+        onCancel() {console.log('否');},
+      });
+    }
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -117,15 +142,17 @@ class CustomerPage extends React.Component {
       dataIndex: "status"
     }, {
       title: "操作",
-      render: () => {
+      width: 150,
+      align: "center",
+      render: (record) => {
         return (
           <div>
-            <Popconfirm placement="top" title={text}
-              onConfirm={this.handleDelete} okText="是" cancelText="否">
-              <Icon type="delete"></Icon>
-            </Popconfirm>
+              <Popconfirm placement="top" title={text}
+                onConfirm={this.handleDelete.bind(this, record.id)} okText="是" cancelText="否">
+                <Button size="small" ><Icon type="delete"></Icon></Button>
+              </Popconfirm>
             &nbsp;&nbsp;
-                {/* < */}
+            <Button size="small" onClick={this.toEdit.bind(this, record)}><Icon type='edit'></Icon></Button>
 
           </div>
         )
@@ -137,20 +164,20 @@ class CustomerPage extends React.Component {
       <div className="customer">
         <div className={styles.customer}>
           <div className={styles.title}>顾客管理</div>
+
+          &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加</Button>
+
+          &nbsp;<Popconfirm
+            placement="bottomLeft"
+            title={text}
+            onConfirm={this.batchDelete}
+            okText="是"
+            cancelText="否">
+            <Button type="danger" >批量删除</Button>
+          </Popconfirm>
+
+          &nbsp;<Button type="link" onClick={showConfirm}>退出</Button>
         </div>
-
-        &nbsp;<Button title="primary" onClick="">添加</Button>
-
-        &nbsp;<Popconfirm
-          placement="bottomLeft"
-          title={text}
-          onConfirm={this.batchDelete}
-          okText="Yes"
-          cancelText="No">
-          <Button>批量删除</Button>
-        </Popconfirm>
-
-        &nbsp;<Button title="link" >退出</Button>
 
         <Table
           rowKey="id"
@@ -163,7 +190,7 @@ class CustomerPage extends React.Component {
         />
 
         <CustomerForm
-          // in
+          initData={this.state.customer}
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
