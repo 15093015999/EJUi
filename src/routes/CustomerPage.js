@@ -45,7 +45,8 @@ class CustomerPage extends React.Component {
         }
       })
   }
-batchDelete=() => {
+  //批量删除用户
+  batchDelete=() => {
     axios.post("/customer/batchDelete", {ids:this.state.selectedRowKeys})
       .then((result) => {
         if (200 === result.status) {
@@ -55,7 +56,7 @@ batchDelete=() => {
           message.error('删除失败，请稍后再试')
         }
       })
-}
+  }
 onSelectChange = selectedRowKeys => {
   this.setState({ selectedRowKeys });
 
@@ -89,7 +90,7 @@ render() {
       return (
         <div>
           <Popconfirm placement="top" title={text}
-            onConfirm={this.handleDelete.bind(this, Record.id)} okText="是" cancelText="否">
+            onConfirm={this.handleDelete} okText="是" cancelText="否">
             <Icon type="delete"></Icon>
           </Popconfirm>
           &nbsp;&nbsp;
@@ -107,16 +108,16 @@ render() {
       </div>
 
       &nbsp;<Button title="primary">添加</Button>
-      &nbsp;
-        <Popconfirm
+
+      &nbsp;<Popconfirm
         placement="bottomLeft"
         title={text}
         onConfirm={this.batchDelete}
         okText="Yes"
-        cancelText="No"
-      >
+        cancelText="No">
         <Button>批量删除</Button>
       </Popconfirm>
+
       &nbsp;<Button title="link" >退出</Button>
 
       <Table
@@ -125,7 +126,6 @@ render() {
         size="small"
         bordered
         // loading={this.state.loading}
-        // rowSelection={rowSelection}
         rowSelection={rowSelection}
         columns={columns}
         dataSource={this.state.list}
