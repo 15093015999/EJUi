@@ -2,8 +2,9 @@
 
 import React from 'react';
 import styles from './CustomerPage.css';
-import { Button, Table, Icon, Popconfirm, message, } from 'antd';
-import axios from '../utils/axios'
+import { Button, Table, Icon, Popconfirm, message } from 'antd';
+import axios from '../utils/axios';
+import CustomerForm from './CustomerForm';
 
 
 class CustomerPage extends React.Component {
@@ -13,14 +14,14 @@ class CustomerPage extends React.Component {
     this.state = {
       selectedRowKeys: [],
       loading: true,
-      list: []
+      list: [],
+      visible: false
     }
   }
 
   componentDidMount() {
     // 查询数据，进行数据绑定
     this.handlerLoad();
-    // this.reloadDate();
   }
 
   //封装查询用户
@@ -60,10 +61,37 @@ class CustomerPage extends React.Component {
         }
       })
   }
+  //添加用户
   onSelectChange = selectedRowKeys => {
     this.setState({ selectedRowKeys });
-
+  }
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+  handleCreate = () => {
+    const form = this.formRef.props.form;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+      axios.post("/customer/save")
+        .then((result) => {
+          message.success(result.statusText)
+        })
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+  }
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  }
+  //
+  toAdd() {
+    this.setState({ visible: true })
   };
+  // toEdit() {
+
+  // }
 
   render() {
     const { selectedRowKeys } = this.state;
@@ -89,7 +117,7 @@ class CustomerPage extends React.Component {
       dataIndex: "status"
     }, {
       title: "操作",
-      render: (table, Record) => {
+      render: () => {
         return (
           <div>
             <Popconfirm placement="top" title={text}
@@ -97,8 +125,9 @@ class CustomerPage extends React.Component {
               <Icon type="delete"></Icon>
             </Popconfirm>
             &nbsp;&nbsp;
+                {/* < */}
 
-                    </div>
+          </div>
         )
       }
     }]
@@ -110,7 +139,7 @@ class CustomerPage extends React.Component {
           <div className={styles.title}>顾客管理</div>
         </div>
 
-        &nbsp;<Button title="primary">添加</Button>
+        &nbsp;<Button title="primary" onClick="">添加</Button>
 
         &nbsp;<Popconfirm
           placement="bottomLeft"
@@ -124,7 +153,6 @@ class CustomerPage extends React.Component {
         &nbsp;<Button title="link" >退出</Button>
 
         <Table
-          // bordered 
           rowKey="id"
           size="small"
           bordered
@@ -132,6 +160,14 @@ class CustomerPage extends React.Component {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={this.state.list}
+        />
+
+        <CustomerForm
+          // in
+          wrappedComponentRef={this.saveFormRef}
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          onCreate={this.handleCreate}
         />
 
       </div>

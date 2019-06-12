@@ -27,7 +27,7 @@ class CategoryPage extends React.Component {
   handlerLoad() {
     axios.get("/category/selectByExample")
       .then((result) => {
-        console.log('查询到的数据为：',result.data);
+        console.log('查询到的数据为：', result.data);
         //将查询到的数据设置到state中
         this.setState({
           list: result.data
@@ -78,7 +78,7 @@ class CategoryPage extends React.Component {
       dataIndex: "name"
     }, {
       title: "数量",
-      dataIndex: "mun"
+      dataIndex: "num"
     }, {
       title: "操作",
       render: (table, Record) => {
