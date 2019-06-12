@@ -1,3 +1,5 @@
+//主页面
+
 import React from 'react';
 import { connect } from 'dva';
 import styles from './IndexPage.css';

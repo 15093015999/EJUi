@@ -1,3 +1,5 @@
+//订单管理页面
+
 import React from 'react';
 import styles from './OrderPage.css';
 import { Button, Table, Icon, Modal, message, Popconfirm } from 'antd'
@@ -29,13 +31,13 @@ class OrderPage extends React.Component {
             )
     }
 
-    handleBatchDelete=()=> {
+    handleBatchDelete = () => {
         Modal.confirm(
             {
                 title: '确认是否删除这些订单',
                 content: '删除后无法恢复偶',
                 onOk: () => {
-                console.log(this.state.selectedRowKeys);
+                    console.log(this.state.selectedRowKeys);
                     axios.post("/order/batchDelete", { ids: this.state.selectedRowKeys })
                         .then((result) => {
                             if (200 === result.status) {
@@ -132,8 +134,8 @@ class OrderPage extends React.Component {
                         okText='Yes'
                         cancelText='No'
                     >
-                    <Button >
-                        删除订单
+                        <Button >
+                            删除订单
                     </Button>
                     </Popconfirm>
                     &nbsp;&nbsp;
