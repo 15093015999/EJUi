@@ -11,6 +11,9 @@ function IndexPage() {
       <ul className={styles.list}>
         {/* <li> <code></code> </li> */}
         <li><a href="http://localhost:8000/#/customer">顾客管理</a></li>
+        <li><a href="http://localhost:8000/#/category">分类管理</a></li>
+        <li><a href="http://localhost:8000/#/order">订单管理</a></li>
+        <li><a href="http://localhost:8000/#/product">商品管理</a></li>
       </ul>
     </div>
   );
