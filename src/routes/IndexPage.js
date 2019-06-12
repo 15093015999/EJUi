@@ -49,7 +49,7 @@ class IndexPage extends React.Component {
       </Menu>
       </div>
         <main className={styles.main}>
-        {this.props.children}
+        {this.props.children?this.props.children:<h1>Welcome!</h1>}
         </main>
         </div>
     );
