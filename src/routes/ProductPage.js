@@ -12,6 +12,7 @@ import React from 'react';
 import styles from './ProductPage.css';
 import { Button, Table, Icon, Popconfirm, message, } from 'antd';
 import axios from '../utils/axios'
+import ProductForm from './ProductForm'
 
 
 class ProductPage extends React.Component {  
@@ -21,7 +22,9 @@ class ProductPage extends React.Component {
     this.state = {
       selectedRowKeys: [],
       loading: true,
-      list: []
+      list: [],
+      visible:false,
+      product:{}
     }
   }
 
@@ -72,6 +75,44 @@ onSelectChange = selectedRowKeys => {
 
 };
 
+  handleCancel = () =>{
+    this.setState({visible:false});
+  };
+  handleCreate = () => {
+    const form = this.formRef.props.form;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+      // 表单校验完成后与后台通信进行保存
+      axios.post("/product/insert",values)
+      .then((result)=>{
+        message.success(result.statusText)
+        // 重置表单
+        form.resetFields();
+        // 关闭模态框
+        this.setState({ visible: false });
+        this.handlerLoad();
+      })
+      
+    });
+  };
+  // 将子组件的引用在父组件中进行保存，方便后期调用
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
+  //添加
+  toAdd(){
+    this.setState({product:{},visible:true})
+  }
+  //更新
+  toEdit(record){
+    //alert(JSON.stringify(record));
+    this.setState({product:record})
+    this.setState({visible:true})
+
+  }
+
 render() {
   const { selectedRowKeys } = this.state;
   const rowSelection = {
@@ -117,10 +158,10 @@ render() {
   return (
     <div className="product">
       <div className={styles.product}>
-        <div className={styles.title}>分型管理</div>
+        <div className={styles.title}>商品管理</div>
       </div>
 
-      &nbsp;<Button title="primary">添加</Button>
+      &nbsp;<Button onClick={this.toAdd.bind(this)}>添加</Button>
       &nbsp;
         <Popconfirm
         placement="bottomLeft"
@@ -144,6 +185,13 @@ render() {
         columns={columns}
         dataSource={this.state.list}
       />
+
+      <ProductForm
+        initData={this.state.product}
+        wrappedComponentRef={this.saveFormRef}
+        visible={this.state.visible}
+        onCancel={this.handleCancel}
+        onCreate={this.handleCreate}/>
 
     </div>
 
