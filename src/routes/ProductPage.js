@@ -150,8 +150,8 @@ render() {
             <Icon type="delete"></Icon>
           </Popconfirm>
           &nbsp;&nbsp;
-
-                    </div>
+          <Icon type="edit" onClick={this.toEdit.bind(this, Record)}></Icon>
+        </div>
       )
     }
   }]

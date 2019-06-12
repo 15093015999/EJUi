@@ -5,6 +5,7 @@ class ProductForm extends React.Component{
     render(){
         const{visible,onCancel,onCreate,form} = this.props;
         const{getFieldDecorator} = form;
+        getFieldDecorator('id')
         return (
             <Modal
                 visible={visible}
