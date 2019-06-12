@@ -5,3 +5,11 @@
 .main{
   flex: 1;
 }
+.title{
+  text-align: center;
+}
+.header{
+}
+.right{
+  flex:1;
+}
