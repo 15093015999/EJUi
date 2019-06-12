@@ -84,7 +84,7 @@ render() {
     dataIndex: "name"
   }, {
     title: "数量",
-    dataIndex: "mun"
+    dataIndex: "num"
   }, {
     title: "操作",
     render: (table, Record) => {
