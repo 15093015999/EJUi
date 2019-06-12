@@ -27,15 +27,15 @@ class CustomerPage extends React.Component {
 
   //封装查询用户
   handlerLoad() {
-    this.setState({loading:true});
+    this.setState({ loading: true });
     axios.get("/customer/findAll")
       .then((result) => {
         //console.log('查询到的数据为：',result.data);
         //将查询到的数据设置到state中
-        this.setState({list: result.data,})
+        this.setState({ list: result.data, })
       })
-      .finally(()=>{
-        this.setState({loading: false})    
+      .finally(() => {
+        this.setState({ loading: false })
       })
   }
   //删除用户
@@ -115,8 +115,8 @@ class CustomerPage extends React.Component {
       confirm({
         title: '确认退出吗？',
         // content: 'Some descriptions',
-        onOk() {console.log('是');},
-        onCancel() {console.log('否');},
+        onOk() { console.log('是'); },
+        onCancel() { console.log('否'); },
       });
     }
     const { selectedRowKeys } = this.state;
@@ -147,10 +147,10 @@ class CustomerPage extends React.Component {
       render: (record) => {
         return (
           <div>
-              <Popconfirm placement="top" title={text}
-                onConfirm={this.handleDelete.bind(this, record.id)} okText="是" cancelText="否">
-                <Button size="small" ><Icon type="delete"></Icon></Button>
-              </Popconfirm>
+            <Popconfirm placement="top" title={text}
+              onConfirm={this.handleDelete.bind(this, record.id)} okText="是" cancelText="否">
+              <Button size="small" ><Icon type="delete"></Icon></Button>
+            </Popconfirm>
             &nbsp;&nbsp;
             <Button size="small" onClick={this.toEdit.bind(this, record)}><Icon type='edit'></Icon></Button>
 
@@ -162,9 +162,9 @@ class CustomerPage extends React.Component {
     //返回结果
     return (
       <div className="customer">
-        <div className={styles.customer}>
-          <div className={styles.title}>顾客管理</div>
-
+        {/* <div className={styles.customer}> */}
+        <div className={styles.customer}>顾客管理</div>
+        <div className={styles.buttonsbmit}>
           &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加</Button>
 
           &nbsp;<Popconfirm
@@ -178,7 +178,7 @@ class CustomerPage extends React.Component {
 
           &nbsp;<Button type="link" onClick={showConfirm}>退出</Button>
         </div>
-
+        {/* </div> */}
         <Table
           rowKey="id"
           size="small"
