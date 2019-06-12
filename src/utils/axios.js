@@ -18,6 +18,10 @@ axios.interceptors.response.use((response) => {
   response.status = data.status;
   response.statusText = data.message;
   response.data = data.data;
+  if(response.status!==200){
+    message.error(data.message)
+    return Promise.resolve(response);
+  }
   return response;
 }, (error) => {
   message.error("服务端异常")

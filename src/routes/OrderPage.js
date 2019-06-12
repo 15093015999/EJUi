@@ -1,16 +1,30 @@
-//订单管理页面
-
 import React from 'react';
 import styles from './OrderPage.css';
 import { Button, Table, Icon, Modal, message, Popconfirm } from 'antd'
 import axios from '../utils/axios'
+import OrderForm from './OrderForm';
+// import moment from 'moment';
+
+// const { MonthPicker, RangePicker } = DatePicker;
+// const dateFormat = 'YYYY/MM/DD';
 class OrderPage extends React.Component {
     constructor() {
         super();
         this.state = {
-            list: [],
+            order: {},
+            list: [
+                // {
+                //     id: 1,
+                //     orderTime: 1,
+                //     total: 1,
+                //     customerId: 1,
+                //     waiterId: 1,
+                //     addressId: 1
+                // }
+            ],
             loading: false,
-            selectedRowKeys: []
+            selectedRowKeys: [],
+            visible: false
         }
     }
 
@@ -72,6 +86,43 @@ class OrderPage extends React.Component {
         this.setState({ selectedRowKeys });
     }
 
+    handleCancel = () => {
+        this.setState({ visible: false });
+    }
+
+    handleCreate = () => {
+        const form = this.formRef.props.form;
+        form.validateFields(
+            (err, values) => {
+                if (err) {
+                    return;
+                }
+                axios.post("order/saveOrUpdate", values)
+                    .then(
+                        (result) => {
+                            message.success(result.statusText)
+                            form.resetFields();
+                        }
+                    )
+                this.setState({ visible: false });
+                this.reloadData();
+            }
+        )
+    }
+
+    saveFormRef = formRef => {
+        this.formRef = formRef;
+    }
+
+    toAdd() {
+        this.setState({ order: {}, visible: true })
+    }
+
+    toEdit(record) {
+        this.setState({ order: record })
+        this.setState({ visible: true })
+    }
+
     render() {
         const { selectedRowKeys } = this.state;
         const rowSelection = {
@@ -86,23 +137,23 @@ class OrderPage extends React.Component {
             },
             {
                 title: "下单时间",
-                dataIndex: "order_time"
+                dataIndex: "orderTime"
             },
             {
-                title: "总花费",
+                title: "金额",
                 dataIndex: "total"
             },
             {
                 title: "下单用户",
-                dataIndex: "customer_id"
+                dataIndex: "customerId"
             },
             {
                 title: "送货号",
-                dataIndex: "waiter_id"
+                dataIndex: "waiterId"
             },
             {
                 title: "地址",
-                dataIndex: "address_id"
+                dataIndex: "addressId"
             },
             {
                 title: "操作",
@@ -113,8 +164,21 @@ class OrderPage extends React.Component {
                                 onConfirm={this.handleDelete.bind(this, Record.id)}
                                 okText='是' cancelText='否'
                             >
-                                <Icon type="delete"></Icon>
+                                <Button>
+                                    <Icon type="delete"></Icon>
+                                </Button>
                             </Popconfirm>
+                            &nbsp;&nbsp;
+                            <Button
+                                type='linlk'
+                                onClick={this.toEdit.bind(this, Record)}
+                            >
+                                <Icon type='edit'>
+
+                                </Icon>
+                            </Button>
+                            &nbsp;&nbsp;
+
                         </div>
                     )
                 }
@@ -139,20 +203,38 @@ class OrderPage extends React.Component {
                     </Button>
                     </Popconfirm>
                     &nbsp;&nbsp;
-                    <Button>
+                    <Button
+                        onClick={this.toAdd.bind(this)}
+                    >
                         下订单
                     </Button>
                     &nbsp;&nbsp;
+
+                    <Button
+                        onClick={() => { window.location.href = "/" }}
+                    >
+                        返回首页
+                    </Button>
                 </div>
 
                 <div>
                     <Table
                         rowKey='id'
                         rowSelection={rowSelection}
-                        dataSource={this.state.list}
                         columns={columns}
+                        dataSource={this.state.list}
                     >
                     </Table>
+
+                    <OrderForm
+                        initData={this.state.order}
+                        wrappedComponentRef={this.saveFormRef}
+                        visible={this.state.visible}
+                        onCancel={this.handleCancel}
+                        onCreate={this.handleCreate}
+                    >
+
+                    </OrderForm>
                 </div>
             </div>
         )
