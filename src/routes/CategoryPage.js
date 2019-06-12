@@ -105,7 +105,7 @@ render() {
   return (
     <div className="category">
       <div className={styles.category}>
-        <div className={styles.title}>分型管理</div>
+        <div className={styles.title}>分类管理</div>
       </div>
 
       &nbsp;<Button title="primary">添加</Button>
