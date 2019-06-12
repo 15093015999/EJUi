@@ -20,7 +20,7 @@ class ProductPage extends React.Component {
     super();
     this.state = {
       selectedRowKeys: [],
-      loading: false,
+      loading: true,
       list: []
     }
   }
@@ -38,7 +38,8 @@ class ProductPage extends React.Component {
         //console.log('查询到的数据为：',result.data);
         //将查询到的数据设置到state中
         this.setState({
-          list: result.data
+          list: result.data,
+          loading:false
         })
       })
   }
@@ -137,7 +138,7 @@ render() {
         rowKey="id"
         size="small"
         bordered
-        // loading={this.state.loading}
+        loading={this.state.loading}
         // rowSelection={rowSelection}
         rowSelection={rowSelection}
         columns={columns}
