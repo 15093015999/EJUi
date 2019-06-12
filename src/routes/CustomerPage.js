@@ -2,11 +2,10 @@
 
 import React from 'react';
 import styles from './CustomerPage.css';
-import { Button, Table, Icon, Popconfirm, message, Modal } from 'antd';
+import { Button, Table, Icon, Popconfirm, message } from 'antd';
 import axios from '../utils/axios';
 import CustomerForm from './CustomerForm';
-
-
+import { Link } from 'dva/router';
 
 class CustomerPage extends React.Component {
   //局部状态state
@@ -109,16 +108,6 @@ class CustomerPage extends React.Component {
   }
 
   render() {
-    //tuichu
-    const confirm = Modal.confirm;
-    function showConfirm() {
-      confirm({
-        title: '确认退出吗？',
-        // content: 'Some descriptions',
-        onOk() { console.log('是'); },
-        onCancel() { console.log('否'); },
-      });
-    }
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -151,9 +140,9 @@ class CustomerPage extends React.Component {
               onConfirm={this.handleDelete.bind(this, record.id)} okText="是" cancelText="否">
               <Button size="small" ><Icon type="delete"></Icon></Button>
             </Popconfirm>
-            &nbsp;&nbsp;
-            <Button size="small" onClick={this.toEdit.bind(this, record)}><Icon type='edit'></Icon></Button>
 
+            &nbsp;&nbsp;
+            <Button size="small" onClick={this.toEdit.bind(this, record)}><Icon type='edit' /></Button>
           </div>
         )
       }
@@ -162,10 +151,10 @@ class CustomerPage extends React.Component {
     //返回结果
     return (
       <div className="customer">
-        {/* <div className={styles.customer}> */}
-        <div className={styles.customer}>顾客管理</div>
+        <div className={styles.customer}>用户管理</div>
+
         <div className={styles.buttonsbmit}>
-          &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加</Button>
+          &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加用户</Button>
 
           &nbsp;<Popconfirm
             placement="bottomLeft"
@@ -176,9 +165,9 @@ class CustomerPage extends React.Component {
             <Button type="danger" >批量删除</Button>
           </Popconfirm>
 
-          &nbsp;<Button type="link" onClick={showConfirm}>退出</Button>
+          &nbsp;<Button type="link" ><Link to="/" >返回主页</Link ></Button>
         </div>
-        {/* </div> */}
+
         <Table
           rowKey="id"
           size="small"
@@ -196,9 +185,7 @@ class CustomerPage extends React.Component {
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
         />
-
       </div>
-
 
     )
   }
