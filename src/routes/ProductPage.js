@@ -24,12 +24,14 @@ class ProductPage extends React.Component {
       list: []
     }
   }
-
-  componentDidMount() {
-    // 查询数据，进行数据绑定
+  UNSAFE_componentWillMount(){
     this.handlerLoad();
-    // this.reloadDate();
   }
+//   componentDidMount() {
+//     // 查询数据，进行数据绑定
+    
+//     // this.reloadDate();
+//   }
 
   //封装查询用户
   handlerLoad() {
