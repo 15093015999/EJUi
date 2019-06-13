@@ -10,7 +10,7 @@ class OrderForm extends React.Component {
         return (
             <Modal
                 visible={visible}
-                title="添加订单"
+                title="订单管理"
                 okText="提交"
                 cancelText="取消"
                 onCancel={onCancel}
@@ -64,5 +64,5 @@ const mapPropsToFields = (props) => {
 }
 
 export default Form.create(
-    {mapPropsToFields}
+    { mapPropsToFields }
 )(OrderForm);
