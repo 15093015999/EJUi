@@ -97,9 +97,9 @@ class IndexPage extends React.Component {
                 </span>
               }
             >
-              <Menu.Item key="5">Tom</Menu.Item>
-              <Menu.Item key="6">Bill</Menu.Item>
-              <Menu.Item key="7">Alex</Menu.Item>
+              <Menu.Item key="8">Tom</Menu.Item>
+              <Menu.Item key="9">Bill</Menu.Item>
+              <Menu.Item key="10">Alex</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
