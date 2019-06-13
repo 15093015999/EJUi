@@ -19,7 +19,7 @@ class ProductPage extends React.Component {
 
     }
   }
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount () {
     this.handlerLoad();
   }
   //   componentDidMount() {
@@ -30,15 +30,17 @@ class ProductPage extends React.Component {
 
   //封装查询
   handlerLoad() {
-    this.setState({loading:true})
+    this.setState({ loading: true })
     axios.get("/product/findAll")
       .then((result) => {
         //console.log('查询到的数据为：',result.data);
         //将查询到的数据设置到state中
         this.setState({
           list: result.data,
-          loading: false
         })
+      })
+      .finally(() => {
+        this.setState({ loading: false })
       })
   }
   //删除

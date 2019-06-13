@@ -36,8 +36,10 @@ class WaiterPage extends React.Component {
         //将查询到的数据设置到state中
         this.setState({
           list: result.data,
-          loading: false
         })
+      })
+      .finally(() => {
+        this.setState({ loading: false })
       })
   }
   //删除用户
@@ -184,7 +186,7 @@ class WaiterPage extends React.Component {
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate} />
-      
+
       </div>
 
 

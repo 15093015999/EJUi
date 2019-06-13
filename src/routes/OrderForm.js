@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Modal, Input, Radio } from 'antd'
+import { Form, Modal, Input, InputNumber } from 'antd'
 
 class OrderForm extends React.Component {
 
@@ -30,12 +30,19 @@ class OrderForm extends React.Component {
                     <Form.Item label="金额">
                         {getFieldDecorator('total', {
                             rules: [{ required: true, message: '请输入金额!' }],
-                        })(<Input.Password />)}
+                        })(
+                            <InputNumber
+                                formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                min={0}
+                                style={{ width: '100%' }}
+                            />
+                        )}
                     </Form.Item>
                     <Form.Item label="下单人">
                         {getFieldDecorator('customerId', {
                             rules: [{ required: true, message: '请输入下单人!' }],
-                        })(<Input.Password />)}
+                        })(<Input />)}
                     </Form.Item>
                     <Form.Item label="送货号">
                         {getFieldDecorator('waiterId', {
@@ -45,7 +52,7 @@ class OrderForm extends React.Component {
                     <Form.Item label="送货地址">
                         {getFieldDecorator('addressId', {
                             rules: [{ required: true, message: '请输入送货地址!' }],
-                        })(<Input.Password />)}
+                        })(<Input />)}
                     </Form.Item>
 
                 </Form>

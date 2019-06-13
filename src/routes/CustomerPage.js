@@ -19,7 +19,7 @@ class CustomerPage extends React.Component {
     }
   }
 
-  componentDidMount() {
+  UNSAFE_componentWillMount () {
     // 查询数据，进行数据绑定
     this.handlerLoad();
   }

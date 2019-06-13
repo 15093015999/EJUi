@@ -19,7 +19,7 @@ class AddressPage extends React.Component {
         }
     }
 
-    componentDidMount() {
+    UNSAFE_componentWillMount () {
         // 查询数据，进行数据绑定
         this.handlerLoad();
     }
@@ -31,7 +31,7 @@ class AddressPage extends React.Component {
             .then((result) => {
                 //console.log('查询到的数据为：',result.data);
                 //将查询到的数据设置到state中
-                this.setState({ list: result.data, })
+                this.setState({ list: result.data })
             })
             .finally(() => {
                 this.setState({ loading: false })

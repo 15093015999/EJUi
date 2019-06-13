@@ -2,11 +2,12 @@
 
 import React from 'react';
 import styles from './CategoryPage.css';
-import { Button, Table, Icon, Popconfirm, message, Select, ButtonGroup } from 'antd';
+import { Input,Button, Table, Icon, Popconfirm, message, Select } from 'antd';
 import axios from '../utils/axios'
 import CategoryForm from './CategoryForm'
 import CategoryTree from './CategoryTree';
 const { Option } = Select;
+const Search = Input.Search;
 
 class CategoryPage extends React.Component {
     children = [];
@@ -15,7 +16,7 @@ class CategoryPage extends React.Component {
         super();
         this.state = {
             selectedRowKeys: [],
-            loading: false,
+            loading: true,
             list: [],
             visible: false,
             category: {},
@@ -24,7 +25,7 @@ class CategoryPage extends React.Component {
         }
     }
 
-    componentDidMount() {
+    UNSAFE_componentWillMount () {
         // 查询数据，进行数据绑定
         this.handlerLoad();
         // this.reloadDate();
@@ -43,6 +44,9 @@ class CategoryPage extends React.Component {
                 this.setState({
                     list: result.data,
                 })
+            })
+            .finally(() => {
+                this.setState({ loading: false })
             })
     }
     //删除
@@ -141,8 +145,23 @@ class CategoryPage extends React.Component {
             }
         })
     }
+
+
+
     onCancelTree = () => {
         this.setState({ visibleTree: false })
+    }
+
+
+    handleSearch=(value)=>{
+        axios.get('category/query',{params:{queryString:value}})
+        .then((result) => {
+            if (200 === result.status) {
+                this.setState({
+                    list: result.data
+                })
+            }
+        })
     }
 
 
@@ -187,6 +206,18 @@ class CategoryPage extends React.Component {
 
 
 
+
+        let titleHeader = (
+            <Search
+                placeholder="输入查询内容"
+                onSearch={value => this.handleSearch(value)}
+                style={{ width: 200 }}
+            />
+        );
+
+
+
+
         //返回结果
         return (
             <div>
@@ -215,6 +246,8 @@ class CategoryPage extends React.Component {
                     rowSelection={rowSelection}
                     columns={columns}
                     dataSource={this.state.list}
+                    title={() => titleHeader}
+                    loading={this.state.loading}
                 />
 
                 <CategoryForm

@@ -32,7 +32,7 @@ class CategoryTree extends React.Component {
             <Modal
                 visible={visible}
                 title="添加分类信息"
-                okText="提交"
+                okText="导出"
                 cancelText="取消"
                 onCancel={onCancel}
             >
