@@ -1,3 +1,5 @@
+//订单管理页面
+
 import React from 'react';
 import styles from './OrderPage.css';
 import { Button, Table, Icon, Modal, message, Popconfirm } from 'antd'
@@ -57,8 +59,6 @@ class OrderPage extends React.Component {
                             if (200 === result.status) {
                                 message.success(result.statusText)
                                 this.reloadData();
-                            } else {
-                                message.error('删除失败/(ㄒoㄒ)/~~')
                             }
                         }
                         )
@@ -75,8 +75,6 @@ class OrderPage extends React.Component {
                     if (200 === result.status) {
                         message.success(result.statusText)
                         this.reloadData();
-                    } else {
-                        message.error('对不起（＞人＜；），失败啦')
                     }
                 }
             )
@@ -187,27 +185,21 @@ class OrderPage extends React.Component {
 
         return (
             <div>
-                <div className={styles.handle}>
+                <div className={styles.header}>
                     订单管理页面
                 </div>
                 <div className={styles.buttonsbmit}>
+                    &nbsp;
+                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加订单</Button>
+                    &nbsp;
                     <Popconfirm
                         placement="bottomRight"
                         onConfirm={this.handleBatchDelete}
                         title={text}
                         okText='Yes'
-                        cancelText='No'
-                    >
-                        <Button >
-                            删除订单
-                    </Button>
+                        cancelText='No'>
+                        <Button type="danger">批量删除</Button>
                     </Popconfirm>
-                    &nbsp;&nbsp;
-                    <Button
-                        onClick={this.toAdd.bind(this)}
-                    >
-                        下订单
-                    </Button>
                 </div>
 
                 <div>

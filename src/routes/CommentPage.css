@@ -1,11 +1,12 @@
-.comment {
-  /* color:blue; */
-  height: 100px;
-  background-color: rgba(0, 0, 0, 0.315);
-  font-weight: bold;
-  line-height: 100px;
-  text-align: center;
-  font-size: 30px;
+
+.header{
+    /* color:blue; */
+    height:100px;
+    background-color:rgba(0, 0, 0, 0.315);
+    font-weight: bold;
+    line-height: 100px;
+    text-align: center;
+    font-size: 30px;
 }
 
 .buttonsbmit {

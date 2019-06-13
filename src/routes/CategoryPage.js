@@ -1,9 +1,11 @@
+//分类管理页面
+
 import React from 'react';
 import styles from './CategoryPage.css';
 import { Button, Table, Icon, Popconfirm, message, Select } from 'antd';
 import axios from '../utils/axios'
 import CategoryForm from './CategoryForm'
-import { Link} from 'dva/router'
+// import { Link} from 'dva/router'
 const { Option } = Select;
 
 class CategoryPage extends React.Component {
@@ -27,7 +29,7 @@ class CategoryPage extends React.Component {
         // this.reloadDate();
     }
 
-    //封装查询用户
+    //封装查询
     handlerLoad() {
         axios.get("/category/selectByExample")
             .then((result) => {
@@ -42,7 +44,7 @@ class CategoryPage extends React.Component {
                 })
             })
     }
-    //删除用户
+    //删除
     handleDelete(id) {
         let obj = { 'id': id }
         axios.post("/category/deleteByPrimaryKey", obj)
@@ -50,8 +52,6 @@ class CategoryPage extends React.Component {
                 if (200 === result.status) {
                     message.success(result.statusText)
                     this.handlerLoad();
-                } else {
-                    message.error('删除失败，请稍后再试')
                 }
             })
     }
@@ -61,8 +61,6 @@ class CategoryPage extends React.Component {
                 if (200 === result.status) {
                     message.success(result.statusText)
                     this.handlerLoad();
-                } else {
-                    message.error('删除失败，请稍后再试')
                 }
             })
     }
@@ -159,21 +157,23 @@ class CategoryPage extends React.Component {
         return (
             <div>
                 <div className={styles.header}>分类管理页面</div>
-                &nbsp;
-                <Button title="primary" onClick={this.toAdd.bind(this)}>添加</Button>
-                &nbsp;
-                <Popconfirm
-                    placement="bottomLeft"
-                    title={text}
-                    onConfirm={this.batchDelete}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <Button>批量删除</Button>
-                </Popconfirm>
-                &nbsp;
-                <Button title="link" ><Link to="/"><Icon type=''/></Link></Button>
 
+                <div className={styles.buttonsbmit}>
+                    &nbsp;
+                <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
+                    &nbsp;
+                <Popconfirm
+                        placement="bottomLeft"
+                        title={text}
+                        onConfirm={this.batchDelete}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="danger" >批量删除</Button>
+                    </Popconfirm>
+                    &nbsp;
+                {/* <Button type="link" ><Link to="/"><Icon type=''/></Link></Button> */}
+                </div>
                 <Table
                     rowKey="id"
                     size="small"
