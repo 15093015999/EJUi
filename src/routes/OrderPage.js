@@ -208,13 +208,6 @@ class OrderPage extends React.Component {
                     >
                         下订单
                     </Button>
-                    &nbsp;&nbsp;
-
-                    <Button
-                        onClick={() => { window.location.href = "/" }}
-                    >
-                        返回首页
-                    </Button>
                 </div>
 
                 <div>
