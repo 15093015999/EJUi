@@ -16,7 +16,7 @@ class ProductPage extends React.Component {
       loading: true,
       list: [],
       visible: false,
-      product: {}
+
     }
   }
   UNSAFE_componentWillMount() {
@@ -30,6 +30,7 @@ class ProductPage extends React.Component {
 
   //封装查询
   handlerLoad() {
+    this.setState({loading:true})
     axios.get("/product/findAll")
       .then((result) => {
         //console.log('查询到的数据为：',result.data);
@@ -138,7 +139,7 @@ class ProductPage extends React.Component {
               <Button size="small"><Icon type="delete"></Icon></Button>
             </Popconfirm>
             &nbsp;&nbsp;
-          <Button size="small"><Icon type="edit" onClick={this.toEdit.bind(this, Record)}></Icon></Button>
+          <Button size="small" onClick={this.toEdit.bind(this, Record)}><Icon type="edit" ></Icon></Button>
           </div>
         )
       }
