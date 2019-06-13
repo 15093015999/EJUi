@@ -1,7 +1,30 @@
-.home{
+/* .home{
   display: flex;
   height: 100%;
 }
 .main{
   flex: 1;
+  padding: 10px;
+}
+.title{
+  text-align: center;
+}
+.header{
+  border-bottom: 1px solid #cccccc;
+}
+.right{
+  flex:1;
+} */
+#components-layout-demo-side .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+.navitem{
+  color: rgba(255, 255, 255, 0.65);
+}
+.logo{
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
 }

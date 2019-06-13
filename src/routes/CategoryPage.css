@@ -1,18 +1,14 @@
 
-.category{
-    color:blue;
-    border-radius:Spx; 
-    padding : 1em;
-    
-}
 
-.title {
-    line-height: 2em;
-    /* line- */
-    font-size: 2.0rem;
-    font-weight: normal;
-    letter-spacing: 3px;
+.header{
+    /* color:blue; */
+    height:100px;
+    background-color:rgba(0, 0, 0, 0.315);
+    font-weight: bold;
+    line-height: 100px;
+    text-align: center;
+    font-size: 30px;
 }
-.ant-table-small > .ant-table-content > .ant-table-body{
-    margin: 0;
-}
+/* .buttonsbmit{
+    margin: 10px;
+} */
