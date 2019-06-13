@@ -93,12 +93,12 @@ class AddressPage extends React.Component {
     //添加
     toAdd() {
         // 将默认值置空,模态框打开
-        this.setState({ customer: {}, visible: true })
+        this.setState({ address: {}, visible: true })
     };
     //更新
     toEdit(record) {
         // 更前先先把要更新的数据设置到state中
-        this.setState({ customer: record })
+        this.setState({ address: record })
         // 将record值绑定表单中
         this.setState({ visible: true })
     }
@@ -118,7 +118,7 @@ class AddressPage extends React.Component {
             dataIndex: "province"
         }, {
             title: "市级（县）",
-            dataIndex: "tcity"
+            dataIndex: "city"
         }, {
             title: "区",
             dataIndex: "area"
