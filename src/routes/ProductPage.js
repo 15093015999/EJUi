@@ -135,10 +135,10 @@ class ProductPage extends React.Component {
           <div>
             <Popconfirm placement="top" title={text}
               onConfirm={this.handleDelete.bind(this, Record.id)} okText="是" cancelText="否">
-              <Icon type="delete"></Icon>
+              <Button size="small"><Icon type="delete"></Icon></Button>
             </Popconfirm>
             &nbsp;&nbsp;
-          <Icon type="edit" onClick={this.toEdit.bind(this, Record)}></Icon>
+          <Button size="small"><Icon type="edit" onClick={this.toEdit.bind(this, Record)}></Icon></Button>
           </div>
         )
       }

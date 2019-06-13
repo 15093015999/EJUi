@@ -160,20 +160,14 @@ class OrderPage extends React.Component {
                         <div>
                             <Popconfirm placement="top" title={text}
                                 onConfirm={this.handleDelete.bind(this, Record.id)}
-                                okText='是' cancelText='否'
-                            >
-                                <Button>
-                                    <Icon type="delete"></Icon>
-                                </Button>
+                                okText='是' cancelText='否'>
+                                <Button size="small" ><Icon type="delete"></Icon></Button>
                             </Popconfirm>
                             &nbsp;&nbsp;
                             <Button
-                                type='linlk'
-                                onClick={this.toEdit.bind(this, Record)}
-                            >
-                                <Icon type='edit'>
-
-                                </Icon>
+                                size="small"
+                                onClick={this.toEdit.bind(this, Record)} >
+                                <Icon type='edit'></Icon>
                             </Button>
                             &nbsp;&nbsp;
 
