@@ -165,7 +165,7 @@ class CustomerPage extends React.Component {
             <Button type="danger" >批量删除</Button>
           </Popconfirm>
 
-          &nbsp;<Button type="link" ><Link to="/" >返回主页</Link ></Button>
+          &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button>
         </div>
 
         <Table

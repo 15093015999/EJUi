@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Modal, Input, } from 'antd'
 
-class CustomerForm extends React.Component {
+class AddressForm extends React.Component {
 
     render() {
         const formLayout = {
@@ -24,30 +24,35 @@ class CustomerForm extends React.Component {
         return (
             <Modal
                 visible={visible}
-                title="顾客管理"
+                title="地址管理"
                 okText="提交"
                 onCancel={onCancel}
                 onOk={onCreate}
             >
                 <Form layout="vertical" {...formLayout}>
-                    <Form.Item label="姓名" >
-                        {getFieldDecorator('realname', {
-                            rules: [{ required: true, message: '请输入姓名!' }],
+                    <Form.Item label="省会" >
+                        {getFieldDecorator('province', {
+                            rules: [{ required: true, message: '请输入!' }],
                         })(<Input />)}
                     </Form.Item>
-                    <Form.Item label="电话" >
+                    <Form.Item label="市级" >
+                        {getFieldDecorator('city', {
+                            rules: [{ required: true, message: '请输入!' }],
+                        })(<Input />)}
+                    </Form.Item>
+                    <Form.Item label="区">
+                        {getFieldDecorator('area', {
+                            rules: [{ required: true, message: '请输入!' }],
+                        })(<Input />)}
+                    </Form.Item>
+                    <Form.Item label="详细地址">
+                        {getFieldDecorator('address', {
+                            rules: [{ required: true, message: '请输入!' }],
+                        })(<Input />)}
+                    </Form.Item>
+                    <Form.Item label="联系方式">
                         {getFieldDecorator('telephone', {
-                            rules: [{ required: true, message: '请输入电话号码!' }],
-                        })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="密码">
-                        {getFieldDecorator('password', {
-                            rules: [{ required: true, message: '请输入密码!' }],
-                        })(<Input.Password />)}
-                    </Form.Item>
-                    <Form.Item label="状态">
-                        {getFieldDecorator('status', {
-                            rules: [{ required: true, message: '请输入状态!' }],
+                            rules: [{ required: true, message: '请输入!' }],
                         })(<Input />)}
                     </Form.Item>
 
@@ -68,4 +73,4 @@ const mapPropsToFields = (props) => {
 
 export default Form.create({
     mapPropsToFields
-})(CustomerForm);
+})(AddressForm);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Modal, Input, } from 'antd'
 
-class CustomerForm extends React.Component {
+class CommentForm extends React.Component {
 
     render() {
         const formLayout = {
@@ -19,35 +19,29 @@ class CustomerForm extends React.Component {
         const { getFieldDecorator } = form;
         // 将表单中没有出现的值做一个双向数据绑定
         getFieldDecorator("id");
-        getFieldDecorator("status");
-        getFieldDecorator("phtot");
+
         return (
             <Modal
                 visible={visible}
-                title="顾客管理"
+                title="评价管理"
                 okText="提交"
                 onCancel={onCancel}
                 onOk={onCreate}
             >
                 <Form layout="vertical" {...formLayout}>
-                    <Form.Item label="姓名" >
-                        {getFieldDecorator('realname', {
-                            rules: [{ required: true, message: '请输入姓名!' }],
+                    <Form.Item label="评价内容" >
+                        {getFieldDecorator('content', {
+                            rules: [{ required: true, message: '请输入!' }],
                         })(<Input />)}
                     </Form.Item>
-                    <Form.Item label="电话" >
-                        {getFieldDecorator('telephone', {
-                            rules: [{ required: true, message: '请输入电话号码!' }],
+                    <Form.Item label="评价时间" >
+                        {getFieldDecorator('commentTime', {
+                            rules: [{ required: true, message: '请输入!' }],
                         })(<Input />)}
                     </Form.Item>
-                    <Form.Item label="密码">
-                        {getFieldDecorator('password', {
-                            rules: [{ required: true, message: '请输入密码!' }],
-                        })(<Input.Password />)}
-                    </Form.Item>
-                    <Form.Item label="状态">
-                        {getFieldDecorator('status', {
-                            rules: [{ required: true, message: '请输入状态!' }],
+                    <Form.Item label="订单号">
+                        {getFieldDecorator('orderId', {
+                            rules: [{ required: true, message: '请输入!' }],
                         })(<Input />)}
                     </Form.Item>
 
@@ -68,4 +62,4 @@ const mapPropsToFields = (props) => {
 
 export default Form.create({
     mapPropsToFields
-})(CustomerForm);
+})(CommentForm);
