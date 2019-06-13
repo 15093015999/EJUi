@@ -1,11 +1,11 @@
-//客户管理页面
+//地址管理页面
 
 import React from 'react';
 import styles from './AddressPage.css';
 import { Button, Table, Icon, Popconfirm, message } from 'antd';
 import axios from '../utils/axios';
 import AddressForm from './AddressForm';
-import { Link } from 'dva/router';
+// import { Link } from 'dva/router';
 
 class AddressPage extends React.Component {
     //局部状态state
@@ -24,7 +24,7 @@ class AddressPage extends React.Component {
         this.handlerLoad();
     }
 
-    //封装查询用户
+    //封装查询
     handlerLoad() {
         this.setState({ loading: true });
         axios.get("/address/selectByExample")
@@ -37,7 +37,7 @@ class AddressPage extends React.Component {
                 this.setState({ loading: false })
             })
     }
-    //删除用户
+    //删除
     handleDelete(id) {
         let obj = { 'id': id }
         axios.post("/address/deleteByPrimaryKey", obj)
@@ -45,24 +45,20 @@ class AddressPage extends React.Component {
                 if (200 === result.status) {
                     message.success(result.statusText)
                     this.handlerLoad();
-                } else {
-                    message.error('删除失败，请稍后再试')
                 }
             })
     }
-    //批量删除用户
+    //批量删除
     batchDelete = () => {
         axios.post("/address/batchDelete", { ids: this.state.selectedRowKeys })
             .then((result) => {
                 if (200 === result.status) {
                     message.success(result.statusText)
                     this.handlerLoad();
-                } else {
-                    message.error('删除失败，请稍后再试')
                 }
             })
     }
-    //添加用户
+    //添加
     onSelectChange = selectedRowKeys => {
         this.setState({ selectedRowKeys });
     }
@@ -94,12 +90,12 @@ class AddressPage extends React.Component {
     saveFormRef = formRef => {
         this.formRef = formRef;
     }
-    //添加用户
+    //添加
     toAdd() {
         // 将默认值置空,模态框打开
         this.setState({ customer: {}, visible: true })
     };
-    //更新用户
+    //更新
     toEdit(record) {
         // 更前先先把要更新的数据设置到state中
         this.setState({ customer: record })
@@ -153,8 +149,8 @@ class AddressPage extends React.Component {
 
         //返回结果
         return (
-            <div className="address">
-                <div className={styles.address}>地址管理</div>
+            <div className="adress">
+                <div className={styles.header}>地址管理</div>
 
                 <div className={styles.buttonsbmit}>
                     &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加地址</Button>
@@ -168,7 +164,7 @@ class AddressPage extends React.Component {
                         <Button type="danger" >批量删除</Button>
                     </Popconfirm>
 
-                    &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button>
+                    {/* &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button> */}
                 </div>
 
                 <Table

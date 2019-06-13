@@ -1,11 +1,11 @@
-//客户管理页面
+//评价管理页面
 
 import React from 'react';
 import styles from './CommentPage.css';
 import { Button, Table, Icon, Popconfirm, message } from 'antd';
 import axios from '../utils/axios';
 import CommentForm from './CommentForm';
-import { Link } from 'dva/router';
+// import { Link } from 'dva/router';
 
 class CommentPage extends React.Component {
     //局部状态state
@@ -45,8 +45,6 @@ class CommentPage extends React.Component {
                 if (200 === result.status) {
                     message.success(result.statusText)
                     this.handlerLoad();
-                } else {
-                    message.error('删除失败，请稍后再试')
                 }
             })
     }
@@ -57,8 +55,6 @@ class CommentPage extends React.Component {
                 if (200 === result.status) {
                     message.success(result.statusText)
                     this.handlerLoad();
-                } else {
-                    message.error('删除失败，请稍后再试')
                 }
             })
     }
@@ -66,7 +62,7 @@ class CommentPage extends React.Component {
     onSelectChange = selectedRowKeys => {
         this.setState({ selectedRowKeys });
     }
-    //取消
+    //取消添加
     handleCancel = () => {
         this.setState({ visible: false });
     }
@@ -148,7 +144,7 @@ class CommentPage extends React.Component {
         //返回结果
         return (
             <div className="comment">
-                <div className={styles.comment}>评价管理</div>
+                <div className={styles.header}>评价管理</div>
 
                 <div className={styles.buttonsbmit}>
                     &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加评价</Button>
@@ -162,7 +158,7 @@ class CommentPage extends React.Component {
                         <Button type="danger" >批量删除</Button>
                     </Popconfirm>
 
-                    &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button>
+                    {/* &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button> */}
                 </div>
 
                 <Table

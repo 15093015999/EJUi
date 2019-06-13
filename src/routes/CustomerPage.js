@@ -5,7 +5,7 @@ import styles from './CustomerPage.css';
 import { Button, Table, Icon, Popconfirm, message } from 'antd';
 import axios from '../utils/axios';
 import CustomerForm from './CustomerForm';
-import { Link } from 'dva/router';
+// import { Link } from 'dva/router';
 
 class CustomerPage extends React.Component {
   //局部状态state
@@ -45,8 +45,6 @@ class CustomerPage extends React.Component {
         if (200 === result.status) {
           message.success(result.statusText)
           this.handlerLoad();
-        } else {
-          message.error('删除失败，请稍后再试')
         }
       })
   }
@@ -57,8 +55,6 @@ class CustomerPage extends React.Component {
         if (200 === result.status) {
           message.success(result.statusText)
           this.handlerLoad();
-        } else {
-          message.error('删除失败，请稍后再试')
         }
       })
   }
@@ -151,7 +147,7 @@ class CustomerPage extends React.Component {
     //返回结果
     return (
       <div className="customer">
-        <div className={styles.customer}>用户管理</div>
+        <div className={styles.header}>用户管理</div>
 
         <div className={styles.buttonsbmit}>
           &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加用户</Button>
@@ -165,7 +161,7 @@ class CustomerPage extends React.Component {
             <Button type="danger" >批量删除</Button>
           </Popconfirm>
 
-          &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button>
+          {/* &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button> */}
         </div>
 
         <Table

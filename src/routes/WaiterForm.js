@@ -24,7 +24,7 @@ class WaiterForm extends React.Component {
         return (
             <Modal
                 visible={visible}
-                title="添加服务员信息"
+                title="服务员管理"
                 okText="提交"
                 onCancel={onCancel}
                 onOk={onCreate}

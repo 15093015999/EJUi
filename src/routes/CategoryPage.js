@@ -1,3 +1,5 @@
+//分类管理页面
+
 import React from 'react';
 import styles from './CategoryPage.css';
 import { Button, Table, Icon, Popconfirm, message, Select } from 'antd';
@@ -28,7 +30,7 @@ class CategoryPage extends React.Component {
         // this.reloadDate();
     }
 
-    //封装查询用户
+    //封装查询
     handlerLoad() {
         axios.get("/category/selectByExample")
             .then((result) => {
@@ -43,7 +45,7 @@ class CategoryPage extends React.Component {
                 })
             })
     }
-    //删除用户
+    //删除
     handleDelete(id) {
         let obj = { 'id': id }
         axios.post("/category/deleteByPrimaryKey", obj)
@@ -51,8 +53,6 @@ class CategoryPage extends React.Component {
                 if (200 === result.status) {
                     message.success(result.statusText)
                     this.handlerLoad();
-                } else {
-                    message.error('删除失败，请稍后再试')
                 }
             })
     }
@@ -62,8 +62,6 @@ class CategoryPage extends React.Component {
                 if (200 === result.status) {
                     message.success(result.statusText)
                     this.handlerLoad();
-                } else {
-                    message.error('删除失败，请稍后再试')
                 }
             })
     }
@@ -208,6 +206,22 @@ class CategoryPage extends React.Component {
                 &nbsp;
                 <Button title="link" onClick={this.toTree.bind(this)}>分类树</Button>
 
+                <div className={styles.buttonsbmit}>
+                    &nbsp;
+                <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
+                    &nbsp;
+                <Popconfirm
+                        placement="bottomLeft"
+                        title={text}
+                        onConfirm={this.batchDelete}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="danger" >批量删除</Button>
+                    </Popconfirm>
+                    &nbsp;
+                {/* <Button type="link" ><Link to="/"><Icon type=''/></Link></Button> */}
+                </div>
                 <Table
                     rowKey="id"
                     size="small"

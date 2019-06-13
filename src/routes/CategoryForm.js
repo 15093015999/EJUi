@@ -3,7 +3,7 @@ import { Form, Modal, Input,Select,InputNumber } from 'antd'
 
 
 class CategoryForm extends React.Component {
-    
+
 
     render() {
         const formLayout = {
@@ -17,16 +17,16 @@ class CategoryForm extends React.Component {
             },
         }
         // 父组件传递给子组件值
-        const { visible, onCancel, onCreate, form,children} = this.props;
+        const { visible, onCancel, onCreate, form, children } = this.props;
         const { getFieldDecorator } = form;
 
-        
+
         // 将表单中没有出现的值做一个双向数据绑定
         getFieldDecorator("id");
         return (
             <Modal
                 visible={visible}
-                title="添加分类信息"
+                title="分类管理"
                 okText="提交"
                 cancelText="取消"
                 onCancel={onCancel}
@@ -41,12 +41,13 @@ class CategoryForm extends React.Component {
                     <Form.Item label="数量" >
                         {getFieldDecorator('num', {
                             rules: [{ required: true, message: '请输入数量!' }],
-                        })(<InputNumber min={0} style={{width:'100%'}}/>)}
+                        })(<InputNumber min={0} style={{ width: '100%' }} />)}
                     </Form.Item>
                     <Form.Item label="父分类id">
                         {getFieldDecorator('parentId', {
-                            rules: []})(
-                        <Select>{children}</Select>
+                            rules: []
+                        })(
+                            <Select>{children}</Select>
                         )}
                     </Form.Item>
 
