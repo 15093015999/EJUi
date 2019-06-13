@@ -87,7 +87,7 @@ onSelectChange = selectedRowKeys => {
         return;
       }
       // 表单校验完成后与后台通信进行保存
-      axios.post("/product/insert",values)
+      axios.post("/product/saveOrUpdate",values)
       .then((result)=>{
         message.success(result.statusText)
         // 重置表单
@@ -163,7 +163,7 @@ render() {
         <div className={styles.title}>商品管理</div>
       </div>
 
-      &nbsp;<Button onClick={this.toAdd.bind(this)}>添加</Button>
+      &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加</Button>
       &nbsp;
         <Popconfirm
         placement="bottomLeft"
@@ -172,9 +172,9 @@ render() {
         okText="Yes"
         cancelText="No"
       >
-        <Button>批量删除</Button>
+        <Button type="danger">批量删除</Button>
       </Popconfirm>
-      &nbsp;<Button title="link" >退出</Button>
+      &nbsp;<Button type="link" >退出</Button>
 
       <Table
         // bordered 
