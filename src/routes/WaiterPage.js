@@ -152,7 +152,7 @@ render() {
 
   //返回结果
   return (
-    <div className="product">
+    <div className="waiter">
       <div className={styles.waiter}>
         <div className={styles.title}>服务员管理</div>
       </div>
