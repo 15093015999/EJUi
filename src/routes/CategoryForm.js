@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Modal, Input, Radio,Select } from 'antd'
+import { Form, Modal, Input, Radio,Select,InputNumber } from 'antd'
+import { width } from 'window-size';
 const { Option } = Select;
 
 class CategoryForm extends React.Component {
@@ -45,8 +46,8 @@ class CategoryForm extends React.Component {
                     </Form.Item>
                     <Form.Item label="数量" >
                         {getFieldDecorator('num', {
-                            rules: [{ required: true, message: '请输入手机号!' }],
-                        })(<Input />)}
+                            rules: [{ required: true, message: '请输入数量!' }],
+                        })(<InputNumber min={0} style={{width:'100%'}}/>)}
                     </Form.Item>
                     <Form.Item label="父分类id">
                         {getFieldDecorator('parentId', {
