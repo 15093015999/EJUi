@@ -1,22 +1,111 @@
+// //主页面
 import React from 'react';
 import { connect } from 'dva';
 import styles from './IndexPage.css';
+import { Link } from 'dva/router';
+import { Layout, Menu, Breadcrumb, Icon, PageHeader, Button,Avatar,Dropdown} from 'antd';
 
-// 首页
-function IndexPage() {
-  return (
-    <div className={styles.normal}>
-      <h1 className={styles.title}>易洁家政服务</h1>
-      {/* <div className={styles.welcome} /> */}
-      <ul className={styles.list}>
-        {/* <li> <code></code> </li> */}
-        <li><a href="http://localhost:8000/#/customer">顾客管理</a></li>
-      </ul>
-    </div>
-  );
+const { Content, Footer, Sider } = Layout;
+const { SubMenu } = Menu;
+
+class IndexPage extends React.Component {
+  state = {
+    collapsed: false,
+  };
+
+  onCollapse = collapsed => {
+    console.log(collapsed);
+    this.setState({ collapsed });
+  };
+
+  render() {
+    const menu = (
+      <Menu>
+        <Menu.Item key="0">
+          <Button>退出</Button>
+        </Menu.Item>
+      </Menu>
+    );
+    return (
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+          <div className={styles.logo} >
+          </div>
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+
+            <Menu.Item key="1">
+              <Link to="/customer">
+                <span>
+                  <Icon type="user" />
+                  <span className={styles.navitem}>用户管理</span>
+                </span>
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item key="2">
+              <Link to="/category">
+                <span>
+                  <Icon type="folder" />
+                  <span className={styles.navitem}>分类管理</span>
+                </span>
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item key="3">
+              <Link to="/order">
+                <span >
+                  <Icon type="file-text" />
+                  <span className={styles.navitem}>订单管理</span>
+                </span>
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item key="4">
+              <Link to="/product">
+                <span>
+                  <Icon type="shopping" />
+                  <span className={styles.navitem}>商品管理</span>
+                </span>
+              </Link>
+            </Menu.Item>
+
+            <SubMenu
+              key="sub1"
+              title={
+                <span>
+                  <Icon type="user" />
+                  <span>其他</span>
+                </span>
+              }
+            >
+              <Menu.Item key="5">Tom</Menu.Item>
+              <Menu.Item key="6">Bill</Menu.Item>
+              <Menu.Item key="7">Alex</Menu.Item>
+            </SubMenu>
+          </Menu>
+        </Sider>
+        <Layout>
+          <PageHeader
+            onBack={() => window.history.back(-1)}
+            title="爱管不管"
+            extra={[
+              // <Button key="3">Operation</Button>,
+              // <Button key="2">Operation</Button>,
+              this.login?<Button key="9" type="primary">登录</Button>:
+              <Dropdown key="10" overlay={menu}>
+                <Avatar style={{ backgroundColor: '#87d068' }} icon="user" />
+              </Dropdown>
+            ]}
+          />
+          <Content style={{ margin: '0 16px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+            </Breadcrumb>
+            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>{this.props.children ? this.props.children : <h1 className={styles.title}>Welcome!</h1>}</div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>Kalearn ©2019</Footer>
+        </Layout>
+      </Layout>
+    );
+  }
 }
-
-IndexPage.propTypes = {
-};
-
 export default connect()(IndexPage);
