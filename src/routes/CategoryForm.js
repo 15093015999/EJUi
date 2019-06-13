@@ -1,16 +1,10 @@
 import React from 'react';
-import { Form, Modal, Input, Select, InputNumber } from 'antd'
-// import { width } from 'window-size';
-// const { Option } = Select;
+import { Form, Modal, Input,Select,InputNumber } from 'antd'
+
 
 class CategoryForm extends React.Component {
 
 
-    componentDidMount() {
-        const { } = this.props;
-        this.children = [];
-
-    }
     render() {
         const formLayout = {
             labelCol: {

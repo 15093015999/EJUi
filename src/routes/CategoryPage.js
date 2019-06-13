@@ -5,7 +5,7 @@ import styles from './CategoryPage.css';
 import { Button, Table, Icon, Popconfirm, message, Select } from 'antd';
 import axios from '../utils/axios'
 import CategoryForm from './CategoryForm'
-// import { Link} from 'dva/router'
+import CategoryTree from './CategoryTree';
 const { Option } = Select;
 
 class CategoryPage extends React.Component {
@@ -19,7 +19,8 @@ class CategoryPage extends React.Component {
             list: [],
             visible: false,
             category: {},
-
+            tree: [],
+            visibleTree: false
         }
     }
 
@@ -113,6 +114,39 @@ class CategoryPage extends React.Component {
 
 
 
+    toTree() {
+        // this.setState({ visibleTree: true })
+        let nodes = [];
+        let tree = [];
+        this.state.list.forEach((item) => {
+            nodes.push({ id: item.id, parentId: item.parentId, name: item.name, children: [] })
+        })
+        //找根节点
+        nodes.forEach((node, index) => {
+            if (node.parentId === null) {
+                tree.push(node);
+                nodes.splice(index, 1);
+                this.backTree(node, nodes)
+            }
+        })
+        this.setState({ tree, visibleTree: true })
+    }
+    //深度优先遍历生成树
+    backTree(tree, nodes) {
+        nodes.forEach((node, index) => {
+            if (node.parentId === tree.id) {
+                tree.children.push(node);
+                // nodes.splice(index,1);
+                this.backTree(node, nodes)
+            }
+        })
+    }
+    onCancelTree = () => {
+        this.setState({ visibleTree: false })
+    }
+
+
+
     render() {
         const { selectedRowKeys } = this.state;
         const rowSelection = {
@@ -157,6 +191,20 @@ class CategoryPage extends React.Component {
         return (
             <div>
                 <div className={styles.header}>分类管理页面</div>
+                &nbsp;
+                <Button title="primary" onClick={this.toAdd.bind(this)}>添加</Button>
+                &nbsp;
+                <Popconfirm
+                    placement="bottomLeft"
+                    title={text}
+                    onConfirm={this.batchDelete}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <Button>批量删除</Button>
+                </Popconfirm>
+                &nbsp;
+                <Button title="link" onClick={this.toTree.bind(this)}>分类树</Button>
 
                 <div className={styles.buttonsbmit}>
                     &nbsp;
@@ -190,6 +238,12 @@ class CategoryPage extends React.Component {
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
                     children={this.children} />
+
+
+                <CategoryTree
+                    visible={this.state.visibleTree}
+                    onCancel={this.onCancelTree}
+                    tree={this.state.tree} />
             </div>
 
 

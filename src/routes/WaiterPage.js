@@ -184,7 +184,7 @@ class WaiterPage extends React.Component {
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate} />
-
+      
       </div>
 
 
