@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './CategoryPage.css';
-import { Button, Table, Icon, Popconfirm, message, Select } from 'antd';
+import { Button, Table, Icon, Popconfirm, message, Select, ButtonGroup } from 'antd';
 import axios from '../utils/axios'
 import CategoryForm from './CategoryForm'
 import CategoryTree from './CategoryTree';
@@ -191,26 +191,11 @@ class CategoryPage extends React.Component {
         return (
             <div>
                 <div className={styles.header}>分类管理页面</div>
-                &nbsp;
-                <Button title="primary" onClick={this.toAdd.bind(this)}>添加</Button>
-                &nbsp;
-                <Popconfirm
-                    placement="bottomLeft"
-                    title={text}
-                    onConfirm={this.batchDelete}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <Button>批量删除</Button>
-                </Popconfirm>
-                &nbsp;
-                <Button title="link" onClick={this.toTree.bind(this)}>分类树</Button>
-
                 <div className={styles.buttonsbmit}>
                     &nbsp;
-                <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
+                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
                     &nbsp;
-                <Popconfirm
+                        <Popconfirm
                         placement="bottomLeft"
                         title={text}
                         onConfirm={this.batchDelete}
@@ -220,7 +205,8 @@ class CategoryPage extends React.Component {
                         <Button type="danger" >批量删除</Button>
                     </Popconfirm>
                     &nbsp;
-                {/* <Button type="link" ><Link to="/"><Icon type=''/></Link></Button> */}
+                    <Button type="link" onClick={this.toTree.bind(this)}>分类树</Button>
+
                 </div>
                 <Table
                     rowKey="id"
