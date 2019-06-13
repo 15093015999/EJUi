@@ -16,7 +16,7 @@ class WaiterPage extends React.Component {
       loading: true,
       list: [],
       visible: false,
-      product: {}
+
     }
   }
   UNSAFE_componentWillMount() {
@@ -141,7 +141,7 @@ class WaiterPage extends React.Component {
               <Button size="small" ><Icon type="delete"></Icon></Button>
             </Popconfirm>
             &nbsp;&nbsp;
-            <Button size="small" ><Icon type="edit" onClick={this.toEdit.bind(this, Record)}></Icon></Button>
+            <Button size="small" onClick={this.toEdit.bind(this, Record)}><Icon type="edit" ></Icon></Button>
           </div>
         )
       }
@@ -184,7 +184,7 @@ class WaiterPage extends React.Component {
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate} />
-
+      
       </div>
 
 
