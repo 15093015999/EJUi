@@ -2,11 +2,10 @@
 
 import React from 'react';
 import styles from './ProductPage.css';
-import { Button, Table, Icon, Popconfirm, message, Input,Select,} from 'antd';
+import { Button, Table, Icon, Popconfirm, message, Input,} from 'antd';
 import axios from '../utils/axios'
 import ProductForm from './ProductForm'
 import ButtonGroup from 'antd/lib/button/button-group';
-const { Option } = Select;
 const Search = Input.Search;
 
 
