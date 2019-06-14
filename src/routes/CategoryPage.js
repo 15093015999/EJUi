@@ -2,12 +2,13 @@
 
 import React from 'react';
 import styles from './CategoryPage.css';
-import { Input,Button, Table, Icon, Popconfirm, message, Select } from 'antd';
+import { Input, Button, Table, Icon, Popconfirm, message, Select } from 'antd';
 import axios from '../utils/axios'
 import CategoryForm from './CategoryForm'
 import CategoryTree from './CategoryTree';
 const { Option } = Select;
 const Search = Input.Search;
+const ButtonGroup = Button.Group;
 
 class CategoryPage extends React.Component {
     children = [];
@@ -25,7 +26,7 @@ class CategoryPage extends React.Component {
         }
     }
 
-    UNSAFE_componentWillMount () {
+    UNSAFE_componentWillMount() {
         // 查询数据，进行数据绑定
         this.handlerLoad();
         // this.reloadDate();
@@ -153,15 +154,15 @@ class CategoryPage extends React.Component {
     }
 
 
-    handleSearch=(value)=>{
-        axios.get('category/query',{params:{queryString:value}})
-        .then((result) => {
-            if (200 === result.status) {
-                this.setState({
-                    list: result.data
-                })
-            }
-        })
+    handleSearch = (value) => {
+        axios.get('category/query', { params: { queryString: value } })
+            .then((result) => {
+                if (200 === result.status) {
+                    this.setState({
+                        list: result.data
+                    })
+                }
+            })
     }
 
 
@@ -208,11 +209,27 @@ class CategoryPage extends React.Component {
 
 
         let titleHeader = (
+            <div className={styles.titleheader}>
             <Search
                 placeholder="输入查询内容"
                 onSearch={value => this.handleSearch(value)}
                 style={{ width: 200 }}
             />
+            <div className={styles.fill}/>
+            <ButtonGroup>
+                <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
+                <Button onClick={this.toTree.bind(this)}>分类树</Button>
+                <Popconfirm
+                    placement="bottomLeft"
+                    title={text}
+                    onConfirm={this.batchDelete}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <Button type="danger" >批量删除</Button>
+                </Popconfirm>
+            </ButtonGroup>
+            </div>
         );
 
 
@@ -222,23 +239,6 @@ class CategoryPage extends React.Component {
         return (
             <div>
                 <div className={styles.header}>分类管理页面</div>
-                <div className={styles.buttonsbmit}>
-                    &nbsp;
-                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
-                    &nbsp;
-                        <Popconfirm
-                        placement="bottomLeft"
-                        title={text}
-                        onConfirm={this.batchDelete}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button type="danger" >批量删除</Button>
-                    </Popconfirm>
-                    &nbsp;
-                    <Button type="link" onClick={this.toTree.bind(this)}>分类树</Button>
-
-                </div>
                 <Table
                     rowKey="id"
                     size="small"
