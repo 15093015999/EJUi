@@ -5,6 +5,7 @@ import styles from './ProductPage.css';
 import { Button, Table, Icon, Popconfirm, message, Input,Select,} from 'antd';
 import axios from '../utils/axios'
 import ProductForm from './ProductForm'
+import ButtonGroup from 'antd/lib/button/button-group';
 const { Option } = Select;
 const Search = Input.Search;
 
@@ -110,7 +111,7 @@ class ProductPage extends React.Component {
 
   //模糊查询
   handleSearch=(value)=>{
-    axios.get('product/query',{params:{queryString:value}})
+    axios.get('product/findByLikeName',{params:{name:value}})
     .then((result) => {
         if (200 === result.status) {
             this.setState({
@@ -163,12 +164,27 @@ class ProductPage extends React.Component {
     }]
 
     let titleHeader = (
+      <div className={styles.titleheader}>
       <Search
           placeholder="输入查询内容"
           onSearch={value => this.handleSearch(value)}
           style={{ width: 200 }}
       />
-  );
+      <div className={styles.fill}/>
+      <ButtonGroup>
+          <Button type="primary" onClick={this.toAdd.bind(this)}>添加商品</Button>
+          <Popconfirm
+        placement="bottomLeft"
+        title={text}
+        onConfirm={this.batchDelete}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Button type="danger">批量删除</Button>
+      </Popconfirm>
+        </ButtonGroup>
+      </div>
+    );
 
 
     //返回结果
@@ -176,20 +192,7 @@ class ProductPage extends React.Component {
       <div className="product">
         <div className={styles.header}>商品管理</div>
 
-        <div className={styles.buttonsbmit}>
-          &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加商品</Button>
-          &nbsp;
-        <Popconfirm
-            placement="bottomLeft"
-            title={text}
-            onConfirm={this.batchDelete}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button type="danger">批量删除</Button>
-          </Popconfirm>
-          {/* &nbsp;<Button type="link" onClick={() => { window.location.href = "/" }}>返回首页</Button> */}
-        </div>
+        
         <Table
           // bordered 
           rowKey="id"
