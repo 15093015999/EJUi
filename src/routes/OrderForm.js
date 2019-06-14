@@ -1,11 +1,11 @@
 import React from 'react';
-import { Form, Modal, Input, InputNumber } from 'antd'
+import { Form, Modal, Input, InputNumber, Select } from 'antd'
 
 class OrderForm extends React.Component {
 
     render() {
         // 父组件传递给子组件值
-        const { visible, onCancel, onCreate, form } = this.props;
+        const { visible, onCancel, onCreate, form, customerList, waiterList, addressList } = this.props;
         const { getFieldDecorator } = form;
         return (
             <Modal
@@ -17,16 +17,19 @@ class OrderForm extends React.Component {
                 onOk={onCreate}
             >
                 <Form layout="vertical">
+
                     <Form.Item label="订单号">
                         {getFieldDecorator('id', {
                             rules: [{ required: true, message: '请输入订单号' }],
                         })(<Input />)}
                     </Form.Item>
+
                     <Form.Item label="下单时间">
                         {getFieldDecorator('orderTime', {
                             rules: [{ required: true, message: '请输入下单时间!' }],
                         })(<Input />)}
                     </Form.Item>
+
                     <Form.Item label="金额">
                         {getFieldDecorator('total', {
                             rules: [{ required: true, message: '请输入金额!' }],
@@ -39,20 +42,23 @@ class OrderForm extends React.Component {
                             />
                         )}
                     </Form.Item>
+
                     <Form.Item label="下单人">
                         {getFieldDecorator('customerId', {
                             rules: [{ required: true, message: '请输入下单人!' }],
-                        })(<Input />)}
+                        })(<Select>{customerList}</Select>)}
                     </Form.Item>
-                    <Form.Item label="送货号">
+
+                    <Form.Item label="送货人">
                         {getFieldDecorator('waiterId', {
-                            rules: [{ required: true, message: '请输入送货号!' }],
-                        })(<Input />)}
+                            rules: [{ required: true, message: '请输入送货人!' }],
+                        })(<Select>{waiterList}</Select>)}
                     </Form.Item>
+
                     <Form.Item label="送货地址">
                         {getFieldDecorator('addressId', {
                             rules: [{ required: true, message: '请输入送货地址!' }],
-                        })(<Input />)}
+                        })(<Select>{addressList}</Select>)}
                     </Form.Item>
 
                 </Form>

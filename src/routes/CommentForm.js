@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Modal, Input, } from 'antd'
+import { Form, Modal, Input,Select } from 'antd'
 
 class CommentForm extends React.Component {
 
@@ -15,7 +15,7 @@ class CommentForm extends React.Component {
             },
         }
         // 父组件传递给子组件值
-        const { visible, onCancel, onCreate, form } = this.props;
+        const { visible, onCancel, onCreate, form, orderList } = this.props;
         const { getFieldDecorator } = form;
         // 将表单中没有出现的值做一个双向数据绑定
         getFieldDecorator("id");
@@ -42,7 +42,7 @@ class CommentForm extends React.Component {
                     <Form.Item label="订单号">
                         {getFieldDecorator('orderId', {
                             rules: [{ required: true, message: '请输入!' }],
-                        })(<Input />)}
+                        })(<Select>{orderList}</Select>)}
                     </Form.Item>
 
                 </Form>

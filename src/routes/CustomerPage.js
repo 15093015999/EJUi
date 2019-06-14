@@ -53,6 +53,7 @@ class CustomerPage extends React.Component {
   }
   //批量删除用户
   batchDelete = () => {
+    console.log(this.state.selectedRowKeys)
     axios.post("/customer/batchDelete", { ids: this.state.selectedRowKeys })
       .then((result) => {
         if (200 === result.status) {
@@ -60,9 +61,11 @@ class CustomerPage extends React.Component {
           this.handlerLoad();
         }
       })
+      this.setState({selectedRowKeys:[]})
   }
   //添加用户
   onSelectChange = selectedRowKeys => {
+    console.log(selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
   //取消添加

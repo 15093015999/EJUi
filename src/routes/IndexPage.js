@@ -26,6 +26,7 @@ defaultSelected=(path)=>{
     case '/address':return ['5'];
     case '/comment':return ['6'];
     case '/waiter':return ['7'];
+    default: return ['1'];
   }
 }
 

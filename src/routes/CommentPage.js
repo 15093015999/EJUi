@@ -2,11 +2,11 @@
 
 import React from 'react';
 import styles from './CommentPage.css';
-import { Button, Table, Icon, Popconfirm, message } from 'antd';
+import { Button, Table, Icon, Popconfirm, message, Select } from 'antd';
 import axios from '../utils/axios';
 import CommentForm from './CommentForm';
 import ButtonGroup from 'antd/lib/button/button-group';
-// import { Link } from 'dva/router';
+const { Option } = Select;
 
 class CommentPage extends React.Component {
     //局部状态state
@@ -16,11 +16,12 @@ class CommentPage extends React.Component {
             selectedRowKeys: [],
             loading: true,
             list: [],
-            visible: false
+            visible: false,
+            orderList:[]
         }
     }
 
-    UNSAFE_componentWillMount () {
+    UNSAFE_componentWillMount() {
         // 查询数据，进行数据绑定
         this.handlerLoad();
     }
@@ -91,17 +92,26 @@ class CommentPage extends React.Component {
     saveFormRef = formRef => {
         this.formRef = formRef;
     }
+
+
+    toCommentModal(commit){
+        axios.get("/order/findAll")
+        .then((result) => {
+            let templist=[];
+            result.data.forEach((item)=>{
+                templist.push(<Option key={item.id} value={item.id}>{item.id}</Option>)
+            })
+            this.setState({comment:commit ,orderList: templist, visible: true })
+        })
+    }
+
     //添加
     toAdd() {
-        // 将默认值置空,模态框打开
-        this.setState({ comment: {}, visible: true })
+        this.toCommentModal({})
     };
     //更新
     toEdit(record) {
-        // 更前先先把要更新的数据设置到state中
-        this.setState({ comment: record })
-        // 将record值绑定表单中
-        this.setState({ visible: true })
+        this.toCommentModal(record)
     }
 
     render() {
@@ -145,28 +155,28 @@ class CommentPage extends React.Component {
 
         let titleHeader = (
             <div className={styles.titleheader}>
-            <div className={styles.fill}/>
-            <ButtonGroup>
-            <Button type="primary" onClick={this.toAdd.bind(this)}>添加评价</Button>
-            <Popconfirm
-                placement="bottomLeft"
-                title={text}
-                onConfirm={this.batchDelete}
-                okText="是"
-                cancelText="否">
-                <Button type="danger" >批量删除</Button>
-            </Popconfirm>
-            </ButtonGroup>
+                <div className={styles.fill} />
+                <ButtonGroup>
+                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加评价</Button>
+                    <Popconfirm
+                        placement="bottomLeft"
+                        title={text}
+                        onConfirm={this.batchDelete}
+                        okText="是"
+                        cancelText="否">
+                        <Button type="danger" >批量删除</Button>
+                    </Popconfirm>
+                </ButtonGroup>
             </div>
-            );
+        );
 
         //返回结果
         return (
             <div className="comment">
                 <div className={styles.header}>评价管理</div>
-                
 
-               
+
+
 
                 <Table
                     rowKey="id"
@@ -185,6 +195,7 @@ class CommentPage extends React.Component {
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                    orderList={this.state.orderList}
                 />
             </div>
 

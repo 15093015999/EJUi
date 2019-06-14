@@ -76,9 +76,9 @@ class AddressPage extends React.Component {
             }
             let obj = {
                 id: values.id,
-                province: values.addr.pop(),
-                city: values.addr.pop(),
-                area: values.addr.pop(),
+                province: values.addr.shift(),
+                city: values.addr.shift(),
+                area: values.addr.shift(),
                 address: values.address,
                 telephone: values.telephone,
                 customerId: values.customerId

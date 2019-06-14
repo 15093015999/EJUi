@@ -128,7 +128,7 @@ class CategoryPage extends React.Component {
             nodes.push({ id: item.id, parentId: item.parentId, name: item.name, children: [] })
         })
         //找根节点
-        nodes.forEach((node, index) => {
+        nodes.forEach((node) => {
             if (node.parentId === null) {
                 tree.push(node);
                 // nodes.splice(index, 1);
@@ -137,9 +137,10 @@ class CategoryPage extends React.Component {
         })
         this.setState({ tree, visibleTree: true })
     }
+    
     //深度优先遍历生成树
     backTree(tree, nodes) {
-        nodes.forEach((node, index) => {
+        nodes.forEach((node) => {
             if (node.parentId === tree.id) {
                 tree.children.push(node);
                 // nodes.splice(index,1);
