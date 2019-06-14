@@ -29,7 +29,7 @@ class IndexPage extends React.Component {
             <Menu.Item key="1">
               <Link to="/customer">
                 <span>
-                  <Icon type="reload" />
+                  <Icon type="smile" />
                   <span className={styles.navitem}>用户管理</span>
                 </span>
               </Link>
