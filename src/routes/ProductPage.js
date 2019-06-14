@@ -2,9 +2,11 @@
 
 import React from 'react';
 import styles from './ProductPage.css';
-import { Button, Table, Icon, Popconfirm, message, } from 'antd';
+import { Button, Table, Icon, Popconfirm, message, Input,Select,} from 'antd';
 import axios from '../utils/axios'
 import ProductForm from './ProductForm'
+const { Option } = Select;
+const Search = Input.Search;
 
 
 class ProductPage extends React.Component {
@@ -106,6 +108,18 @@ class ProductPage extends React.Component {
 
   }
 
+  //模糊查询
+  handleSearch=(value)=>{
+    axios.get('product/query',{params:{queryString:value}})
+    .then((result) => {
+        if (200 === result.status) {
+            this.setState({
+                list: result.data
+            })
+        }
+    })
+}
+
   render() {
     const { selectedRowKeys } = this.state;
     const rowSelection = {
@@ -133,6 +147,7 @@ class ProductPage extends React.Component {
       dataIndex: "photo"
     }, {
       title: "操作",
+      align: "center",
       render: (table, Record) => {
         return (
           <div>
@@ -146,6 +161,15 @@ class ProductPage extends React.Component {
         )
       }
     }]
+
+    let titleHeader = (
+      <Search
+          placeholder="输入查询内容"
+          onSearch={value => this.handleSearch(value)}
+          style={{ width: 200 }}
+      />
+  );
+
 
     //返回结果
     return (
@@ -176,6 +200,7 @@ class ProductPage extends React.Component {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={this.state.list}
+          title={() => titleHeader}
         />
 
         <ProductForm
