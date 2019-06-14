@@ -2,10 +2,10 @@
 
 import React from 'react';
 import styles from './WaiterPage.css';
-import { Button, Table, Icon, Popconfirm, message,Select,Input, } from 'antd';
+import { Button, Table, Icon, Popconfirm, message,Input, } from 'antd';
 import axios from '../utils/axios'
 import WaiterForm from './WaiterForm'
-const { Option } = Select;
+import ButtonGroup from 'antd/lib/button/button-group';
 const Search = Input.Search;
 
 
@@ -168,10 +168,11 @@ class WaiterPage extends React.Component {
           onSearch={value => this.handleSearch(value)}
           style={{ width: 200 }}
       />
+    
       <div className={styles.fill}/>
-          &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加人员</Button>
-          &nbsp;
-        <Popconfirm
+      <ButtonGroup>
+          <Button type="primary" onClick={this.toAdd.bind(this)}>添加人员</Button>
+          <Popconfirm
             placement="bottomLeft"
             title={text}
             onConfirm={this.batchDelete}
@@ -180,6 +181,7 @@ class WaiterPage extends React.Component {
           >
             <Button type="danger">批量删除</Button>
           </Popconfirm>
+            </ButtonGroup>
         </div>
   );
 
