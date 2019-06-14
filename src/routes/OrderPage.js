@@ -128,7 +128,6 @@ class OrderPage extends React.Component {
 
     //去编辑
     toEdit(record) {
-
         this.setState({ order: record })
         this.setState({ visible: true });
     }
@@ -187,8 +186,12 @@ class OrderPage extends React.Component {
         )
     }
     handleSearch(value) {
-        axios.get(`/order/findOrderAndOrderLineByOrderId?id=${value}`)
-            .then((res) => { this.setState({ list: [res.data.order], templist: res.data.orderLine }) })
+        if(value){
+            axios.get(`/order/findOrderAndOrderLineByOrderId?id=${value}`)
+                .then((res) => { this.setState({ list: [res.data.order], templist: res.data.orderLine }) })
+        }else{
+            this.reloadData();
+        }
     }
 
 
@@ -205,7 +208,7 @@ class OrderPage extends React.Component {
 
 
 
-        const expandedRowRender = (ecord) => {
+        let expandedRowRender = (ecord) => {
             const columns = [
                 { title: '编号', dataIndex: 'id', key: 'id' },
                 { title: '数量', dataIndex: 'number', key: 'number' },
@@ -303,7 +306,7 @@ class OrderPage extends React.Component {
                 />
                 <div className={styles.fill} />
                 <ButtonGroup>
-                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
+                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加订单</Button>
                     <Popconfirm
                         placement="bottomLeft"
                         title={text}

@@ -164,7 +164,7 @@ class CustomerPage extends React.Component {
         />
         <div className={styles.fill} />
         <ButtonGroup>
-          <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
+          <Button type="primary" onClick={this.toAdd.bind(this)}>添加客户</Button>
           <Popconfirm
             placement="bottomLeft"
             title={text}
