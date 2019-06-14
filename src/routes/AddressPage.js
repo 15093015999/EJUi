@@ -1,11 +1,12 @@
 //地址管理页面
-
 import React from 'react';
 import styles from './AddressPage.css';
-import { Button, Table, Icon, Popconfirm, message } from 'antd';
+import { Button, Table, Icon, Popconfirm, message, } from 'antd';
 import axios from '../utils/axios';
 import AddressForm from './AddressForm';
 // import { Link } from 'dva/router';
+
+const ButtonGroup = Button.Group;
 
 class AddressPage extends React.Component {
     //局部状态state
@@ -15,11 +16,11 @@ class AddressPage extends React.Component {
             selectedRowKeys: [],
             loading: true,
             list: [],
-            visible: false
+            visible: false,
         }
     }
 
-    UNSAFE_componentWillMount () {
+    UNSAFE_componentWillMount() {
         // 查询数据，进行数据绑定
         this.handlerLoad();
     }
@@ -73,8 +74,16 @@ class AddressPage extends React.Component {
             if (err) {
                 return;
             }
-            // 表单校验完成后与后台通信进行保存
-            axios.post("/address/saveOrUpdate", values)
+            let obj = {
+                id: values.id,
+                province: values.addr.shift(),
+                city: values.addr.shift(),
+                area: values.addr.shift(),
+                address: values.address,
+                telephone: values.telephone,
+                customerId: values.customerId
+            }
+            axios.post("/address/saveOrUpdate", obj)
                 .then((result) => {
                     message.success(result.statusText)
                     this.handlerLoad();
@@ -84,6 +93,7 @@ class AddressPage extends React.Component {
             // 关闭模态框
             this.setState({ visible: false });
             this.handlerLoad();
+
         });
     }
     // 将子组件的引用在父组件中进行保存，方便后期调用
@@ -97,8 +107,15 @@ class AddressPage extends React.Component {
     };
     //更新
     toEdit(record) {
+        const obj = {
+            id: record.id,
+            addr: [record.province, record.city, record.area],
+            address: record.address,
+            telephone: record.telephone,
+            customerId: record.customerId
+        }
         // 更前先先把要更新的数据设置到state中
-        this.setState({ address: record })
+        this.setState({ address: obj })
         // 将record值绑定表单中
         this.setState({ visible: true })
     }
@@ -147,25 +164,31 @@ class AddressPage extends React.Component {
             }
         }]
 
+        let titleHeader = (
+        <div className={styles.titleheader}>
+                    <div className={styles.fill} />
+                    <ButtonGroup>
+                        <Button type="primary" onClick={this.toAdd.bind(this)}>添加地址</Button>
+
+                        <Popconfirm
+                            placement="bottomLeft"
+                            title={text}
+                            onConfirm={this.batchDelete}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button type="danger" >批量删除</Button>
+                        </Popconfirm>
+                    </ButtonGroup>
+                </div>
+        );
+
+
         //返回结果
         return (
             <div className="adress">
                 <div className={styles.header}>地址管理</div>
-
-                <div className={styles.buttonsbmit}>
-                    &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加地址</Button>
-
-                    &nbsp;<Popconfirm
-                        placement="bottomLeft"
-                        title={text}
-                        onConfirm={this.batchDelete}
-                        okText="是"
-                        cancelText="否">
-                        <Button type="danger" >批量删除</Button>
-                    </Popconfirm>
-
-                    {/* &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button> */}
-                </div>
+                
 
                 <Table
                     rowKey="id"
@@ -175,6 +198,7 @@ class AddressPage extends React.Component {
                     rowSelection={rowSelection}
                     columns={columns}
                     dataSource={this.state.list}
+                    title={() => titleHeader}
                 />
 
                 <AddressForm

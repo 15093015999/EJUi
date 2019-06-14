@@ -1,7 +1,43 @@
 import React from 'react';
-import { Form, Modal, Input, } from 'antd'
-
+import { Form, Modal, Input, Cascader } from 'antd'
 class AddressForm extends React.Component {
+    constructor() {
+        super();
+        this.options = [
+            {
+                value: 'zhejiang',
+                label: 'Zhejiang',
+                children: [
+                    {
+                        value: 'hangzhou',
+                        label: 'Hangzhou',
+                        children: [
+                            {
+                                value: 'xihu',
+                                label: 'West Lake',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                value: 'jiangsu',
+                label: 'Jiangsu',
+                children: [
+                    {
+                        value: 'nanjing',
+                        label: 'Nanjing',
+                        children: [
+                            {
+                                value: 'zhonghuamen',
+                                label: 'Zhong Hua Men',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ];
+    }
 
     render() {
         const formLayout = {
@@ -21,6 +57,8 @@ class AddressForm extends React.Component {
         getFieldDecorator("id");
         getFieldDecorator("status");
         getFieldDecorator("phtot");
+        
+        
         return (
             <Modal
                 visible={visible}
@@ -30,20 +68,11 @@ class AddressForm extends React.Component {
                 onOk={onCreate}
             >
                 <Form layout="vertical" {...formLayout}>
-                    <Form.Item label="省会" >
-                        {getFieldDecorator('province', {
+                    <Form.Item label="省/市/区" >
+                        {getFieldDecorator('addr', {
                             rules: [{ required: true, message: '请输入!' }],
-                        })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="市级" >
-                        {getFieldDecorator('city', {
-                            rules: [{ required: true, message: '请输入!' }],
-                        })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="区">
-                        {getFieldDecorator('area', {
-                            rules: [{ required: true, message: '请输入!' }],
-                        })(<Input />)}
+                        })(<Cascader options={this.options}/>)}
+
                     </Form.Item>
                     <Form.Item label="详细地址">
                         {getFieldDecorator('address', {

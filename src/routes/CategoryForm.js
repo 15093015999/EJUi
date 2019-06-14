@@ -43,7 +43,7 @@ class CategoryForm extends React.Component {
                             rules: [{ required: true, message: '请输入数量!' }],
                         })(<InputNumber min={0} style={{ width: '100%' }} />)}
                     </Form.Item>
-                    <Form.Item label="父分类id">
+                    <Form.Item label="父分类">
                         {getFieldDecorator('parentId', {
                             rules: []
                         })(

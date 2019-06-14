@@ -45,6 +45,11 @@ class WaiterForm extends React.Component {
                             rules: [{ required: true, message: '请输入密码!' }],
                         })(<Input.Password />)}
                     </Form.Item>
+                    <Form.Item label="卡号" >
+                        {getFieldDecorator('idcard', {
+                            rules: [{ required: true, message: '请输入卡号!' }],
+                        })(<Input />)}
+                    </Form.Item>
                     <Form.Item label="状态">
                         {getFieldDecorator('status', {
                             rules: [{ required: true, message: '请输入状态!' }],

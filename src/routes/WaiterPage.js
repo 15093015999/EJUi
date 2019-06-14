@@ -2,9 +2,11 @@
 
 import React from 'react';
 import styles from './WaiterPage.css';
-import { Button, Table, Icon, Popconfirm, message, } from 'antd';
+import { Button, Table, Icon, Popconfirm, message,Input, } from 'antd';
 import axios from '../utils/axios'
 import WaiterForm from './WaiterForm'
+import ButtonGroup from 'antd/lib/button/button-group';
+const Search = Input.Search;
 
 
 class WaiterPage extends React.Component {
@@ -105,6 +107,18 @@ class WaiterPage extends React.Component {
 
   }
 
+  //模糊查询
+  handleSearch=(value)=>{
+    axios.get('waiter/findByLikeRealname',{params:{realname:value}})
+    .then((result) => {
+        if (200 === result.status) {
+            this.setState({
+                list: result.data
+            })
+        }
+    })
+}
+
   render() {
     const { selectedRowKeys } = this.state;
     const rowSelection = {
@@ -119,9 +133,6 @@ class WaiterPage extends React.Component {
       title: "电话",
       dataIndex: "telephone"
     }, {
-      title: "密码",
-      dataIndex: "password"
-    }, {
       title: "姓名",
       dataIndex: "realname"
     }, {
@@ -135,6 +146,7 @@ class WaiterPage extends React.Component {
       dataIndex: "photo"
     }, {
       title: "操作",
+      align: "center",
       render: (table, Record) => {
         return (
           <div>
@@ -149,15 +161,18 @@ class WaiterPage extends React.Component {
       }
     }]
 
-    //返回结果
-    return (
-      <div className="waiter">
-        <div className={styles.header}>服务员管理</div>
-
-        <div className={styles.buttonsbmit}>
-          &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加人员</Button>
-          &nbsp;
-        <Popconfirm
+    let titleHeader = (
+      <div className={styles.titleheader}>
+      <Search
+          placeholder="输入查询内容"
+          onSearch={value => this.handleSearch(value)}
+          style={{ width: 200 }}
+      />
+    
+      <div className={styles.fill}/>
+      <ButtonGroup>
+          <Button type="primary" onClick={this.toAdd.bind(this)}>添加人员</Button>
+          <Popconfirm
             placement="bottomLeft"
             title={text}
             onConfirm={this.batchDelete}
@@ -166,8 +181,17 @@ class WaiterPage extends React.Component {
           >
             <Button type="danger">批量删除</Button>
           </Popconfirm>
-          {/* &nbsp;<Button type="link" onClick={() => { window.location.href = "/" }}>返回首页</Button> */}
+            </ButtonGroup>
         </div>
+  );
+
+
+    //返回结果
+    return (
+      <div className="waiter">
+        <div className={styles.header}>服务员管理</div>
+
+        
         <Table
           // bordered 
           rowKey="id"
@@ -178,6 +202,7 @@ class WaiterPage extends React.Component {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={this.state.list}
+          title={() => titleHeader}
         />
 
         <WaiterForm

@@ -2,10 +2,13 @@
 
 import React from 'react';
 import styles from './OrderPage.css';
-import { Button, Table, Icon, Modal, message, Popconfirm } from 'antd'
+import { Input, Button, Table, Icon, Modal, message, Popconfirm, Select } from 'antd'
 import axios from '../utils/axios'
 import OrderForm from './OrderForm';
 import OrderLineForm from './OrderLineForm'
+const { Option } = Select;
+const Search = Input.Search;
+const ButtonGroup = Button.Group;
 // import moment from 'moment';
 
 // const { MonthPicker, RangePicker } = DatePicker;
@@ -23,7 +26,10 @@ class OrderPage extends React.Component {
             selectedRowKeys: [],
             visible: false,
             visibleOrderLine: false,
-
+            productList: [],
+            customerList: [],
+            waiterList: [],
+            addressList: []
         }
     }
 
@@ -82,8 +88,21 @@ class OrderPage extends React.Component {
                 }
             )
     }
+    //订单项删除处理
+    handleLineDelete(id) {
+        let obj = { 'id': id }
+        axios.post("/orderLine/deleteById", obj)
+            .then(
+                (result) => {
+                    if (200 === result.status) {
+                        message.success(result.statusText)
+                        this.reloadData();
+                    }
+                }
+            )
+    }
 
-    //查询改变事件处理
+
     onSelectChange = selectedRowKeys => {
         this.setState({ selectedRowKeys });
     }
@@ -118,42 +137,82 @@ class OrderPage extends React.Component {
         this.formRef = formRef;
     }
 
+    //*核心函数*//回调封装
+    gainList = (addr, callBack) => {
+        return axios.get(addr).then((result) => {
+            if (200 === result.status) {
+                callBack(result.data);
+            }
+        })
+    }
+
+    //打开订单模态框
+    toOrderModal(order) {
+        let requsetCustomer = this.gainList('/customer/findAll',
+            (data) => {
+                let templist = []
+                data.forEach((item) => {
+                    templist.push(<Option key={item.id} value={item.id}>{item.realname}</Option>);
+                })
+                this.setState({ customerList: templist });
+            });
+        let requsetWaiter = this.gainList('/waiter/findAll',
+            (data) => {
+                let templist = []
+                data.forEach((item) => {
+                    templist.push(<Option key={item.id} value={item.id}>{item.realname}</Option>);
+                })
+                this.setState({ waiterList: templist });
+            });
+        let requsetAddress = this.gainList('/address/selectByExample',
+            (data) => {
+                let templist = []
+                data.forEach((item) => {
+                    templist.push(<Option key={item.id} value={item.id}>{`${item.province}/${item.city}/${item.area}/${item.address}`}</Option>);
+                })
+                this.setState({ addressList: templist });
+            })
+
+        //三个请求同时成功打开模态窗
+        Promise.all([requsetCustomer, requsetWaiter, requsetAddress]).then(() => {
+            this.setState({ order: order, visible: true });
+        })
+    }
+
     //去添加
     toAdd() {
-        this.setState({ order: {}, visible: true })
+        this.toOrderModal({})
     }
 
     //去编辑
     toEdit(record) {
-
-        this.setState({ order: record })
-        this.setState({ visible: true });
+        this.toOrderModal(record)
     }
 
-    //订单项删除处理
-    handleLineDelete(id) {
-        let obj = { 'id': id }
-        axios.post("/orderLine/deleteById", obj)
-            .then(
-                (result) => {
-                    if (200 === result.status) {
-                        message.success(result.statusText)
-                        this.reloadData();
-                    }
-                }
-            )
+
+
+    //打开订单项模态框
+    toOrderLineModal(callBack) {
+        this.gainList('/product/findAll',
+            (data) => {
+                let templist = []
+                data.forEach((item) => {
+                    templist.push(<Option key={item.id} value={item.id}>{item.name}</Option>);
+                })
+                callBack();
+                this.setState({ visibleOrderLine: true, productList: templist });
+            });
     }
 
     //订单项编辑处理
     toOrderLineEdit(record) {
-        this.setState({ orderLine: record })
-        this.setState({ visibleOrderLine: true });
+        this.toOrderLineModal(() => { this.setState({ orderLine: record }) })
     }
 
     //订单项去添加
-    toAddOrderLine(record) {
-        this.selectedOrderId = { value: record };
-        this.setState({ selectedOrderId: { value: record }, visibleOrderLine: true })
+    toAddOrderLine = (record) => {
+        this.setState({ orderLine: {} })
+        this.toOrderLineModal(() => { this.selectedOrderId = { value: record } })
     }
 
     //订单项模态取消
@@ -175,13 +234,21 @@ class OrderPage extends React.Component {
                             form.resetFields();
                         }
                     )
-                    .finally(() => { 
+                    .finally(() => {
                         this.setState({ visibleOrderLine: false });
-                        this.reloadData(); 
+                        this.reloadData();
                     })
-                
+
             }
         )
+    }
+    handleSearch(value) {
+        if (value) {
+            axios.get(`/order/findOrderAndOrderLineByOrderId?id=${value}`)
+                .then((res) => { this.setState({ list: [res.data.order], templist: res.data.orderLine }) })
+        } else {
+            this.reloadData();
+        }
     }
 
 
@@ -198,14 +265,14 @@ class OrderPage extends React.Component {
 
 
 
-        const expandedRowRender = (ecord) => {
+        let expandedRowRender = (ecord) => {
             const columns = [
                 { title: '编号', dataIndex: 'id', key: 'id' },
                 { title: '数量', dataIndex: 'number', key: 'number' },
                 { title: '商品编号', dataIndex: 'productId', key: 'productId' },
                 { title: '订单编号', dataIndex: 'orderId', key: 'orderId' },
                 {
-                    title: '操作', align: "center", render: (table, Record) => {
+                    title: '操作', align: "center", render: (Record) => {
                         return (
                             <div>
                                 <Popconfirm placement="top" title={text}
@@ -220,8 +287,7 @@ class OrderPage extends React.Component {
                                     <Icon type='edit'></Icon>
                                 </Button>
                                 &nbsp;&nbsp;
-
-                        </div>
+                            </div>
                         )
                     }
                 }
@@ -232,9 +298,6 @@ class OrderPage extends React.Component {
                 }
             }
         };
-
-
-
 
 
 
@@ -286,36 +349,51 @@ class OrderPage extends React.Component {
             }
         ]
 
+
+        let titleHeader = (
+            <div className={styles.titleheader}>
+                <Search
+                    placeholder="输入查询内容"
+                    onSearch={value => this.handleSearch(value)}
+                    style={{ width: 200 }}
+                />
+                <div className={styles.fill} />
+                <ButtonGroup>
+                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加订单</Button>
+                    <Popconfirm
+                        placement="bottomLeft"
+                        title={text}
+                        onConfirm={this.handleBatchDelete}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="danger" >批量删除</Button>
+                    </Popconfirm>
+                </ButtonGroup>
+            </div>
+        );
+
+
+
         return (
             <div>
                 <div className={styles.header}>
                     订单管理页面
                 </div>
-                <div className={styles.buttonsbmit}>
-                    &nbsp;
-                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加订单</Button>
-                    &nbsp;
-                    <Popconfirm
-                        placement="bottomRight"
-                        onConfirm={this.handleBatchDelete}
-                        title={text}
-                        okText='Yes'
-                        cancelText='No'>
-                        <Button type="danger">批量删除</Button>
-                    </Popconfirm>
-                </div>
 
                 <div>
                     <Table
                         rowKey='id'
+                        size="small"
                         rowSelection={rowSelection}
                         columns={columns}
                         dataSource={this.state.list}
                         expandedRowRender={expandedRowRender}
                         bordered
+                        title={() => titleHeader}
                         loading={this.state.loading}
-                    >
-                    </Table>
+                    />
+
 
                     <OrderForm
                         initData={this.state.order}
@@ -323,6 +401,10 @@ class OrderPage extends React.Component {
                         visible={this.state.visible}
                         onCancel={this.handleCancel}
                         onCreate={this.handleCreate}
+                        customerList={this.state.customerList}
+                        waiterList={this.state.waiterList}
+                        addressList={this.state.addressList}
+
                     />
 
                     <OrderLineForm
@@ -332,6 +414,7 @@ class OrderPage extends React.Component {
                         onCancel={this.handleOrderLineCancel}
                         onCreate={this.handleOrderLineCreate}
                         orderId={this.selectedOrderId}
+                        productList={this.state.productList}
                     />
 
 

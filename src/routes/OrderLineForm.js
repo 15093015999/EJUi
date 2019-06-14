@@ -1,13 +1,15 @@
 import React from 'react';
-import { Form, Modal, Input,InputNumber } from 'antd'
+import { Form, Modal, Input, InputNumber, Select } from 'antd'
 
 class OrderLineForm extends React.Component {
 
     render() {
         // 父组件传递给子组件值
-        const { visible, onCancel, onCreate, form,orderId } = this.props;
+        const { visible, onCancel, onCreate, form, orderId, productList } = this.props;
         const { getFieldDecorator } = form;
-        getFieldDecorator('orderId',orderId);
+        if(orderId==null){
+            getFieldDecorator('orderId', orderId);
+        }
         getFieldDecorator('id');
         return (
             <Modal
@@ -20,19 +22,19 @@ class OrderLineForm extends React.Component {
             >
                 <Form layout="vertical">
                     <Form.Item label="订单号">
-                        {getFieldDecorator('orderId',{
+                        {getFieldDecorator('orderId', {
                             rules: [{ required: true, message: '请输入订单号!' }],
-                        })(<Input disabled/>)}
+                        })(<Input disabled />)}
                     </Form.Item>
                     <Form.Item label="数量">
-                        {getFieldDecorator('number',{
+                        {getFieldDecorator('number', {
                             rules: [{ required: true, message: '请输入数量!' }],
                         })(<InputNumber min={0} style={{ width: '100%' }} />)}
                     </Form.Item>
-                    <Form.Item label="商品编号">
-                        {getFieldDecorator('productId',{
-                            rules: [{ required: true, message: '请输入商品编号!' }],
-                        })(<Input />)}
+                    <Form.Item label="商品">
+                        {getFieldDecorator('productId', {
+                            rules: [{ required: true, message: '请输入商品!' }],
+                        })(<Select>{productList}</Select>)}
                     </Form.Item>
                 </Form>
             </Modal>
@@ -46,8 +48,8 @@ const mapPropsToFields = (props) => {
         let val = props.initData[key];
         obj[key] = Form.createFormField({ value: val })
     }
-    if(obj['id']==null&&props.orderId!==undefined){
-        obj['orderId']=Form.createFormField({ value: props.orderId.value })
+    if (obj['id'] == null && props.orderId !== undefined) {
+        obj['orderId'] = Form.createFormField({ value: props.orderId.value })
     }
     return obj;
 }

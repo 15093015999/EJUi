@@ -2,10 +2,13 @@
 
 import React from 'react';
 import styles from './CustomerPage.css';
-import { Button, Table, Icon, Popconfirm, message } from 'antd';
+import { Button, Table, Icon, Popconfirm, message, Input, } from 'antd';
 import axios from '../utils/axios';
 import CustomerForm from './CustomerForm';
 // import { Link } from 'dva/router';
+
+const Search = Input.Search
+const ButtonGroup = Button.Group;
 
 class CustomerPage extends React.Component {
   //局部状态state
@@ -19,7 +22,7 @@ class CustomerPage extends React.Component {
     }
   }
 
-  UNSAFE_componentWillMount () {
+  UNSAFE_componentWillMount() {
     // 查询数据，进行数据绑定
     this.handlerLoad();
   }
@@ -50,6 +53,7 @@ class CustomerPage extends React.Component {
   }
   //批量删除用户
   batchDelete = () => {
+    console.log(this.state.selectedRowKeys)
     axios.post("/customer/batchDelete", { ids: this.state.selectedRowKeys })
       .then((result) => {
         if (200 === result.status) {
@@ -57,9 +61,11 @@ class CustomerPage extends React.Component {
           this.handlerLoad();
         }
       })
+      this.setState({selectedRowKeys:[]})
   }
   //添加用户
   onSelectChange = selectedRowKeys => {
+    console.log(selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
   //取消添加
@@ -103,6 +109,17 @@ class CustomerPage extends React.Component {
     this.setState({ visible: true })
   }
 
+  handleSearch = (value) => {
+    axios.get('customer/findByLikeRealname', { params: { realname: value } })
+      .then((result) => {
+        if (200 === result.status) {
+          this.setState({
+            list: result.data
+          })
+        }
+      })
+  }
+
   render() {
     const { selectedRowKeys } = this.state;
     const rowSelection = {
@@ -119,9 +136,6 @@ class CustomerPage extends React.Component {
     }, {
       title: "电话",
       dataIndex: "telephone"
-    }, {
-      title: "密码",
-      dataIndex: "password"
     }, {
       title: "状态",
       dataIndex: "status"
@@ -144,25 +158,33 @@ class CustomerPage extends React.Component {
       }
     }]
 
-    //返回结果
-    return (
-      <div className="customer">
-        <div className={styles.header}>用户管理</div>
-
-        <div className={styles.buttonsbmit}>
-          &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加用户</Button>
-
-          &nbsp;<Popconfirm
+    let titleHeader = (
+      <div className={styles.titleheader}>
+        <Search
+          placeholder="输入查询内容"
+          onSearch={value => this.handleSearch(value)}
+          style={{ width: 200 }}
+        />
+        <div className={styles.fill} />
+        <ButtonGroup>
+          <Button type="primary" onClick={this.toAdd.bind(this)}>添加客户</Button>
+          <Popconfirm
             placement="bottomLeft"
             title={text}
             onConfirm={this.batchDelete}
-            okText="是"
-            cancelText="否">
+            okText="Yes"
+            cancelText="No"
+          >
             <Button type="danger" >批量删除</Button>
           </Popconfirm>
+        </ButtonGroup>
+      </div>
+    );
 
-          {/* &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button> */}
-        </div>
+    //返回结果
+    return (
+      <div >
+        <div className={styles.header}>用户管理</div>
 
         <Table
           rowKey="id"
@@ -172,6 +194,7 @@ class CustomerPage extends React.Component {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={this.state.list}
+          title={() => titleHeader}
         />
 
         <CustomerForm
