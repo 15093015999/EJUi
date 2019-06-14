@@ -165,12 +165,8 @@ class AddressPage extends React.Component {
             }
         }]
 
-
-        //返回结果
-        return (
-            <div className="adress">
-                <div className={styles.header}>地址管理</div>
-                <div className={styles.titleheader}>
+        let titleHeader = (
+        <div className={styles.titleheader}>
                     <div className={styles.fill} />
                     <ButtonGroup>
                         <Button type="primary" onClick={this.toAdd.bind(this)}>添加地址</Button>
@@ -186,6 +182,14 @@ class AddressPage extends React.Component {
                         </Popconfirm>
                     </ButtonGroup>
                 </div>
+        );
+
+
+        //返回结果
+        return (
+            <div className="adress">
+                <div className={styles.header}>地址管理</div>
+                
 
                 <Table
                     rowKey="id"
@@ -195,6 +199,7 @@ class AddressPage extends React.Component {
                     rowSelection={rowSelection}
                     columns={columns}
                     dataSource={this.state.list}
+                    title={() => titleHeader}
                 />
 
                 <AddressForm

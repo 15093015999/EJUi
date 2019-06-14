@@ -143,29 +143,28 @@ class CommentPage extends React.Component {
         }]
 
 
-        // let titleHeader = (
-
-        // </div>
-        // );
+        let titleHeader = (
+            <div className={styles.titleheader}>
+            <div className={styles.fill}/>
+            <ButtonGroup>
+            <Button type="primary" onClick={this.toAdd.bind(this)}>添加评价</Button>
+            <Popconfirm
+                placement="bottomLeft"
+                title={text}
+                onConfirm={this.batchDelete}
+                okText="是"
+                cancelText="否">
+                <Button type="danger" >批量删除</Button>
+            </Popconfirm>
+            </ButtonGroup>
+            </div>
+            );
 
         //返回结果
         return (
             <div className="comment">
                 <div className={styles.header}>评价管理</div>
-                <div className={styles.titleheader}>
-                <div className={styles.fill}/>
-                <ButtonGroup>
-                <Button type="primary" onClick={this.toAdd.bind(this)}>添加评价</Button>
-                <Popconfirm
-                    placement="bottomLeft"
-                    title={text}
-                    onConfirm={this.batchDelete}
-                    okText="是"
-                    cancelText="否">
-                    <Button type="danger" >批量删除</Button>
-                </Popconfirm>
-                </ButtonGroup>
-                </div>
+                
 
                
 
@@ -177,6 +176,7 @@ class CommentPage extends React.Component {
                     rowSelection={rowSelection}
                     columns={columns}
                     dataSource={this.state.list}
+                    title={() => titleHeader}
                 />
 
                 <CommentForm
