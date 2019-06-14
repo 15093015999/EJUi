@@ -15,11 +15,11 @@ class AddressPage extends React.Component {
             selectedRowKeys: [],
             loading: true,
             list: [],
-            visible: false
+            visible: false,
         }
     }
 
-    UNSAFE_componentWillMount () {
+    UNSAFE_componentWillMount() {
         // 查询数据，进行数据绑定
         this.handlerLoad();
     }
@@ -73,8 +73,16 @@ class AddressPage extends React.Component {
             if (err) {
                 return;
             }
-            // 表单校验完成后与后台通信进行保存
-            axios.post("/address/saveOrUpdate", values)
+            let obj = {
+                id: values.id,
+                province: values.addr.pop(),
+                city: values.addr.pop(),
+                area: values.addr.pop(),
+                address: values.address,
+                telephone: values.telephone,
+                customerId: values.customerId
+            }
+            axios.post("/address/saveOrUpdate", obj)
                 .then((result) => {
                     message.success(result.statusText)
                     this.handlerLoad();
@@ -84,6 +92,7 @@ class AddressPage extends React.Component {
             // 关闭模态框
             this.setState({ visible: false });
             this.handlerLoad();
+
         });
     }
     // 将子组件的引用在父组件中进行保存，方便后期调用
@@ -97,8 +106,15 @@ class AddressPage extends React.Component {
     };
     //更新
     toEdit(record) {
+        const obj = {
+            id: record.id,
+            addr: [record.province, record.city, record.area],
+            address: record.address,
+            telephone: record.telephone,
+            customerId: record.customerId
+        }
         // 更前先先把要更新的数据设置到state中
-        this.setState({ address: record })
+        this.setState({ address: obj })
         // 将record值绑定表单中
         this.setState({ visible: true })
     }

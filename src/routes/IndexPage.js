@@ -22,8 +22,7 @@ class IndexPage extends React.Component {
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
-          <div className={styles.logo} >
-          </div>
+          <div className={styles.logo} ></div>
           <Menu theme="dark" mode="inline">
 
             <Menu.Item key="1">
@@ -112,7 +111,7 @@ class IndexPage extends React.Component {
             // <Button key="2">Operation</Button>,
             <Button key="1" type="primary">
               登录
-            </Button>,
+            </Button>
           ]}
           />
           <Content style={{ margin: '0 16px' }}>
