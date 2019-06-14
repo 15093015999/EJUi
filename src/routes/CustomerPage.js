@@ -2,12 +2,13 @@
 
 import React from 'react';
 import styles from './CustomerPage.css';
-import { Button, Table, Icon, Popconfirm, message, Input } from 'antd';
+import { Button, Table, Icon, Popconfirm, message, Input, } from 'antd';
 import axios from '../utils/axios';
 import CustomerForm from './CustomerForm';
 // import { Link } from 'dva/router';
 
 const Search = Input.Search
+const ButtonGroup = Button.Group;
 
 class CustomerPage extends React.Component {
   //局部状态state
@@ -106,7 +107,7 @@ class CustomerPage extends React.Component {
   }
 
   handleSearch = (value) => {
-    axios.get('category/query', { params: { queryString: value } })
+    axios.get('customer/findByLikeRealname', { params: { realname: value } })
       .then((result) => {
         if (200 === result.status) {
           this.setState({
@@ -155,32 +156,32 @@ class CustomerPage extends React.Component {
     }]
 
     let titleHeader = (
-      <Search
-        placeholder="输入查询内容"
-        onSearch={value => this.handleSearch(value)}
-        style={{ width: 200 }}
-      />
+      <div className={styles.titleheader}>
+        <Search
+          placeholder="输入查询内容"
+          onSearch={value => this.handleSearch(value)}
+          style={{ width: 200 }}
+        />
+        <div className={styles.fill} />
+        <ButtonGroup>
+          <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
+          <Popconfirm
+            placement="bottomLeft"
+            title={text}
+            onConfirm={this.batchDelete}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="danger" >批量删除</Button>
+          </Popconfirm>
+        </ButtonGroup>
+      </div>
     );
 
     //返回结果
     return (
-      <div className="customer">
+      <div >
         <div className={styles.header}>用户管理</div>
-
-        <div className={styles.buttonsbmit}>
-          &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加用户</Button>
-
-          &nbsp;<Popconfirm
-            placement="bottomLeft"
-            title={text}
-            onConfirm={this.batchDelete}
-            okText="是"
-            cancelText="否">
-            <Button type="danger" >批量删除</Button>
-          </Popconfirm>
-
-          {/* &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button> */}
-        </div>
 
         <Table
           rowKey="id"
