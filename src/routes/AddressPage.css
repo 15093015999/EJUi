@@ -9,6 +9,10 @@
     font-size: 30px;
 }
 
-.buttonsbmit {
+.titleheader {
+  display: flex;
   margin: 10px;
+}
+.fill{
+  flex:1;
 }
