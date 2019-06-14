@@ -2,10 +2,12 @@
 
 import React from 'react';
 import styles from './OrderPage.css';
-import { Button, Table, Icon, Modal, message, Popconfirm } from 'antd'
+import { Input, Button, Table, Icon, Modal, message, Popconfirm } from 'antd'
 import axios from '../utils/axios'
 import OrderForm from './OrderForm';
 import OrderLineForm from './OrderLineForm'
+const Search = Input.Search;
+const ButtonGroup = Button.Group;
 // import moment from 'moment';
 
 // const { MonthPicker, RangePicker } = DatePicker;
@@ -176,13 +178,17 @@ class OrderPage extends React.Component {
                             form.resetFields();
                         }
                     )
-                    .finally(() => { 
+                    .finally(() => {
                         this.setState({ visibleOrderLine: false });
-                        this.reloadData(); 
+                        this.reloadData();
                     })
-                
+
             }
         )
+    }
+    handleSearch(value) {
+        axios.get(`/order/findOrderAndOrderLineByOrderId?id=${value}`)
+            .then((res) => { this.setState({ list: [res.data.order], templist: res.data.orderLine }) })
     }
 
 
@@ -287,33 +293,48 @@ class OrderPage extends React.Component {
             }
         ]
 
+
+        let titleHeader = (
+            <div className={styles.titleheader}>
+                <Search
+                    placeholder="输入查询内容"
+                    onSearch={value => this.handleSearch(value)}
+                    style={{ width: 200 }}
+                />
+                <div className={styles.fill} />
+                <ButtonGroup>
+                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
+                    <Popconfirm
+                        placement="bottomLeft"
+                        title={text}
+                        onConfirm={this.handleBatchDelete}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="danger" >批量删除</Button>
+                    </Popconfirm>
+                </ButtonGroup>
+            </div>
+        );
+
+
+
         return (
             <div>
                 <div className={styles.header}>
                     订单管理页面
                 </div>
-                <div className={styles.buttonsbmit}>
-                    &nbsp;
-                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加订单</Button>
-                    &nbsp;
-                    <Popconfirm
-                        placement="bottomRight"
-                        onConfirm={this.handleBatchDelete}
-                        title={text}
-                        okText='Yes'
-                        cancelText='No'>
-                        <Button type="danger">批量删除</Button>
-                    </Popconfirm>
-                </div>
 
                 <div>
                     <Table
                         rowKey='id'
+                        size="small"
                         rowSelection={rowSelection}
                         columns={columns}
                         dataSource={this.state.list}
                         expandedRowRender={expandedRowRender}
                         bordered
+                        title={() => titleHeader}
                         loading={this.state.loading}
                     >
                     </Table>
