@@ -1,11 +1,13 @@
+//分类管理页面
+
 import React from 'react';
 import styles from './CategoryPage.css';
-import { Button, Table, Icon, Popconfirm, message, Select } from 'antd';
+import { Input,Button, Table, Icon, Popconfirm, message, Select } from 'antd';
 import axios from '../utils/axios'
 import CategoryForm from './CategoryForm'
-import CategoryTree from './CategoryTree'
-import { Link } from 'dva/router'
+import CategoryTree from './CategoryTree';
 const { Option } = Select;
+const Search = Input.Search;
 
 class CategoryPage extends React.Component {
     children = [];
@@ -14,22 +16,22 @@ class CategoryPage extends React.Component {
         super();
         this.state = {
             selectedRowKeys: [],
-            loading: false,
+            loading: true,
             list: [],
             visible: false,
             category: {},
-            visibleTree:false,
-            tree:[]
+            tree: [],
+            visibleTree: false
         }
     }
 
-    componentDidMount() {
+    UNSAFE_componentWillMount () {
         // 查询数据，进行数据绑定
         this.handlerLoad();
         // this.reloadDate();
     }
 
-    //封装查询用户
+    //封装查询
     handlerLoad() {
         axios.get("/category/selectByExample")
             .then((result) => {
@@ -43,8 +45,11 @@ class CategoryPage extends React.Component {
                     list: result.data,
                 })
             })
+            .finally(() => {
+                this.setState({ loading: false })
+            })
     }
-    //删除用户
+    //删除
     handleDelete(id) {
         let obj = { 'id': id }
         axios.post("/category/deleteByPrimaryKey", obj)
@@ -52,8 +57,6 @@ class CategoryPage extends React.Component {
                 if (200 === result.status) {
                     message.success(result.statusText)
                     this.handlerLoad();
-                } else {
-                    message.error('删除失败，请稍后再试')
                 }
             })
     }
@@ -63,8 +66,6 @@ class CategoryPage extends React.Component {
                 if (200 === result.status) {
                     message.success(result.statusText)
                     this.handlerLoad();
-                } else {
-                    message.error('删除失败，请稍后再试')
                 }
             })
     }
@@ -97,10 +98,6 @@ class CategoryPage extends React.Component {
 
         });
     };
-
-    handleTreeCancel=()=>{
-        this.setState({ visibleTree: false });
-    }
     // 将子组件的引用在父组件中进行保存，方便后期调用
     saveFormRef = formRef => {
         this.formRef = formRef;
@@ -117,40 +114,55 @@ class CategoryPage extends React.Component {
         // 将record值绑定表单中
         this.setState({ visible: true })
     }
-    toTree = () => {
-        this.state.tree=[];
+
+
+
+
+    toTree() {
+        // this.setState({ visibleTree: true })
         let nodes = [];
-        this.state.list.forEach((node) => {
-            nodes.push({ id: node.id, parentId: node.parentId, name: node.name, children: [] })
+        let tree = [];
+        this.state.list.forEach((item) => {
+            nodes.push({ id: item.id, parentId: item.parentId, name: item.name, children: [] })
         })
-        // for (let i = 0; i < nodes.length; i++) {
-        //     if (nodes[i].parentId == null) {
-        //         this.state.tree.push(nodes[i]);
-        //         nodes.splice(i, 1)
-        //     }
-        // }
-        nodes.forEach((node,index)=>{
-            if(node.parentId==null){
-                this.state.tree.push(node);
-                nodes.splice(index,1);
+        //找根节点
+        nodes.forEach((node, index) => {
+            if (node.parentId === null) {
+                tree.push(node);
+                nodes.splice(index, 1);
+                this.backTree(node, nodes)
             }
         })
-        this.state.tree.forEach((node) => {
-            this.backTree(node.id, node, nodes);
-        })
-        this.setState({visibleTree: true })
-
+        this.setState({ tree, visibleTree: true })
     }
-    backTree (id, tree, nodes) {
-        nodes.forEach((node,index) => {
-            if (node.parentId == id) {
-                tree.children.push(node)
-                this.backTree(node.id, node, nodes)
+    //深度优先遍历生成树
+    backTree(tree, nodes) {
+        nodes.forEach((node, index) => {
+            if (node.parentId === tree.id) {
+                tree.children.push(node);
+                // nodes.splice(index,1);
+                this.backTree(node, nodes)
             }
         })
-        return;
     }
 
+
+
+    onCancelTree = () => {
+        this.setState({ visibleTree: false })
+    }
+
+
+    handleSearch=(value)=>{
+        axios.get('category/query',{params:{queryString:value}})
+        .then((result) => {
+            if (200 === result.status) {
+                this.setState({
+                    list: result.data
+                })
+            }
+        })
+    }
 
 
 
@@ -194,25 +206,39 @@ class CategoryPage extends React.Component {
 
 
 
+
+        let titleHeader = (
+            <Search
+                placeholder="输入查询内容"
+                onSearch={value => this.handleSearch(value)}
+                style={{ width: 200 }}
+            />
+        );
+
+
+
+
         //返回结果
         return (
             <div>
                 <div className={styles.header}>分类管理页面</div>
-                &nbsp;
-                <Button title="primary" onClick={this.toAdd.bind(this)}>添加</Button>
-                &nbsp;
-                <Popconfirm
-                    placement="bottomLeft"
-                    title={text}
-                    onConfirm={this.batchDelete}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <Button>批量删除</Button>
-                </Popconfirm>
-                &nbsp;
-                <Button onClick={this.toTree.bind(this)}>查看生成树</Button>
+                <div className={styles.buttonsbmit}>
+                    &nbsp;
+                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
+                    &nbsp;
+                        <Popconfirm
+                        placement="bottomLeft"
+                        title={text}
+                        onConfirm={this.batchDelete}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="danger" >批量删除</Button>
+                    </Popconfirm>
+                    &nbsp;
+                    <Button type="link" onClick={this.toTree.bind(this)}>分类树</Button>
 
+                </div>
                 <Table
                     rowKey="id"
                     size="small"
@@ -220,6 +246,8 @@ class CategoryPage extends React.Component {
                     rowSelection={rowSelection}
                     columns={columns}
                     dataSource={this.state.list}
+                    title={() => titleHeader}
+                    loading={this.state.loading}
                 />
 
                 <CategoryForm
@@ -230,10 +258,11 @@ class CategoryPage extends React.Component {
                     onCreate={this.handleCreate}
                     children={this.children} />
 
+
                 <CategoryTree
                     visible={this.state.visibleTree}
-                    tree={this.state.tree}
-                    onCancel={this.handleTreeCancel}/>
+                    onCancel={this.onCancelTree}
+                    tree={this.state.tree} />
             </div>
 
 

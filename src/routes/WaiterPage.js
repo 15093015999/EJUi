@@ -1,13 +1,13 @@
-//商品管理页面
+//服务员管理页面
 
 import React from 'react';
-import styles from './ProductPage.css';
+import styles from './WaiterPage.css';
 import { Button, Table, Icon, Popconfirm, message, } from 'antd';
 import axios from '../utils/axios'
-import ProductForm from './ProductForm'
+import WaiterForm from './WaiterForm'
 
 
-class ProductPage extends React.Component {
+class WaiterPage extends React.Component {
   //局部状态state
   constructor() {
     super();
@@ -19,7 +19,7 @@ class ProductPage extends React.Component {
 
     }
   }
-  UNSAFE_componentWillMount () {
+  UNSAFE_componentWillMount() {
     this.handlerLoad();
   }
   //   componentDidMount() {
@@ -28,10 +28,9 @@ class ProductPage extends React.Component {
   //     // this.reloadDate();
   //   }
 
-  //封装查询
+  //封装查询用户
   handlerLoad() {
-    this.setState({ loading: true })
-    axios.get("/product/findAll")
+    axios.get("/waiter/findAll")
       .then((result) => {
         //console.log('查询到的数据为：',result.data);
         //将查询到的数据设置到state中
@@ -43,10 +42,10 @@ class ProductPage extends React.Component {
         this.setState({ loading: false })
       })
   }
-  //删除
+  //删除用户
   handleDelete(id) {
     let obj = { 'id': id }
-    axios.post("/product/deleteById", obj)
+    axios.post("/waiter/deleteById", obj)
       .then((result) => {
         if (200 === result.status) {
           message.success(result.statusText)
@@ -55,7 +54,7 @@ class ProductPage extends React.Component {
       })
   }
   batchDelete = () => {
-    axios.post("/product/batchDelete", { ids: this.state.selectedRowKeys })
+    axios.post("/waiter/batchDelete", { ids: this.state.selectedRowKeys })
       .then((result) => {
         if (200 === result.status) {
           message.success(result.statusText)
@@ -78,7 +77,7 @@ class ProductPage extends React.Component {
         return;
       }
       // 表单校验完成后与后台通信进行保存
-      axios.post("/product/saveOrUpdate", values)
+      axios.post("/waiter/saveOrUpdate", values)
         .then((result) => {
           message.success(result.statusText)
           // 重置表单
@@ -96,12 +95,12 @@ class ProductPage extends React.Component {
   };
   //添加
   toAdd() {
-    this.setState({ product: {}, visible: true })
+    this.setState({ waiter: {}, visible: true })
   }
   //更新
   toEdit(record) {
     //alert(JSON.stringify(record));
-    this.setState({ product: record })
+    this.setState({ waiter: record })
     this.setState({ visible: true })
 
   }
@@ -114,17 +113,20 @@ class ProductPage extends React.Component {
     };
     let text = "是否删除"
     let columns = [{
-      title: "编号",
+      title: "工号",
       dataIndex: "id"
     }, {
-      title: "商品名称",
-      dataIndex: "name"
+      title: "电话",
+      dataIndex: "telephone"
     }, {
-      title: "描述",
-      dataIndex: "description"
+      title: "密码",
+      dataIndex: "password"
     }, {
-      title: "价格",
-      dataIndex: "price"
+      title: "姓名",
+      dataIndex: "realname"
+    }, {
+      title: "卡号",
+      dataIndex: "idcard"
     }, {
       title: "状态",
       dataIndex: "status"
@@ -138,10 +140,10 @@ class ProductPage extends React.Component {
           <div>
             <Popconfirm placement="top" title={text}
               onConfirm={this.handleDelete.bind(this, Record.id)} okText="是" cancelText="否">
-              <Button size="small"><Icon type="delete"></Icon></Button>
+              <Button size="small" ><Icon type="delete"></Icon></Button>
             </Popconfirm>
             &nbsp;&nbsp;
-          <Button size="small" onClick={this.toEdit.bind(this, Record)}><Icon type="edit" ></Icon></Button>
+            <Button size="small" onClick={this.toEdit.bind(this, Record)}><Icon type="edit" ></Icon></Button>
           </div>
         )
       }
@@ -149,11 +151,11 @@ class ProductPage extends React.Component {
 
     //返回结果
     return (
-      <div className="product">
-        <div className={styles.header}>商品管理</div>
+      <div className="waiter">
+        <div className={styles.header}>服务员管理</div>
 
         <div className={styles.buttonsbmit}>
-          &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加商品</Button>
+          &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加人员</Button>
           &nbsp;
         <Popconfirm
             placement="bottomLeft"
@@ -178,8 +180,8 @@ class ProductPage extends React.Component {
           dataSource={this.state.list}
         />
 
-        <ProductForm
-          initData={this.state.product}
+        <WaiterForm
+          initData={this.state.waiter}
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
@@ -192,4 +194,4 @@ class ProductPage extends React.Component {
   }
 }
 
-export default ProductPage;
+export default WaiterPage;

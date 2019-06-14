@@ -1,57 +1,46 @@
 import React from 'react';
-import { Form, Modal, Input, Select, InputNumber, Tree, Icon, } from 'antd'
+import { Modal, Tree } from 'antd'
+import { connect } from 'dva';
 const { TreeNode } = Tree;
+
 class CategoryTree extends React.Component {
 
-    displayTree(tree){
-        let treeNode = []
-        tree.forEach((node)=>{
-            treeNode.push(<TreeNode key={node.id} title={node.name}>{this.backTree(node)}</TreeNode>)
+    dispalyTree(tree) {
+        let treeTag = []
+        tree.forEach((node) => {
+            treeTag.push(<TreeNode key={node.id} title={node.name}>{this.backTree(node)}</TreeNode>)
         })
-        return treeNode
-    }
+        return treeTag
 
-    backTree(node){
-        let Children=[]
-        node.children.forEach((child)=>{
-            Children.push(<TreeNode key={child.id} title={child.name}>{this.backTree(child)}</TreeNode>)
+    }
+    backTree(node) {
+        let treeTag = []
+        node.children.forEach((child) => {
+            treeTag.push(<TreeNode key={child.id} title={child.name}>{this.backTree(child)}</TreeNode>)
         })
-        return Children;
+        return treeTag
     }
-
 
     render() {
         // 父组件传递给子组件值
-        const { visible, onCancel, onCreate, form, tree } = this.props;
-        const { getFieldDecorator } = form;
-        // 将表单中没有出现的值做一个双向数据绑定
-        getFieldDecorator("id");
+        const { visible, onCancel, tree } = this.props;
+        // console.log(tree)
+        // console.log(this.dispalyTree(tree))
+
+
         return (
             <Modal
                 visible={visible}
-                title="分类生成树"
+                title="添加分类信息"
                 okText="导出"
                 cancelText="取消"
                 onCancel={onCancel}
-                onOk={onCreate}
             >
                 <Tree showLine defaultExpandedKeys={['0-0-0']} onSelect={this.onSelect}>
-                    {this.displayTree(tree)}
+                    {this.dispalyTree(tree)}
                 </Tree>
             </Modal>
         );
     }
 }
-// 将通过props从父组件中获取的值拿出来设置到表单元素上
-const mapPropsToFields = (props) => {
-    let obj = {};
-    for (let key in props.initData) {
-        let val = props.initData[key];
-        obj[key] = Form.createFormField({ value: val })
-    }
-    return obj;
-}
-
-export default Form.create({
-    mapPropsToFields
-})(CategoryTree);
+export default connect()(CategoryTree);

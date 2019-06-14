@@ -1,9 +1,7 @@
 import React from 'react';
-import { Form, Modal, Input,Select,InputNumber } from 'antd'
+import { Form, Modal, Input, } from 'antd'
 
-
-class CategoryForm extends React.Component {
-
+class WaiterForm extends React.Component {
 
     render() {
         const formLayout = {
@@ -17,38 +15,40 @@ class CategoryForm extends React.Component {
             },
         }
         // 父组件传递给子组件值
-        const { visible, onCancel, onCreate, form, children } = this.props;
+        const { visible, onCancel, onCreate, form } = this.props;
         const { getFieldDecorator } = form;
-
-
         // 将表单中没有出现的值做一个双向数据绑定
         getFieldDecorator("id");
+        getFieldDecorator("status");
+        getFieldDecorator("phtot");
         return (
             <Modal
                 visible={visible}
-                title="分类管理"
+                title="服务员管理"
                 okText="提交"
-                cancelText="取消"
                 onCancel={onCancel}
                 onOk={onCreate}
             >
                 <Form layout="vertical" {...formLayout}>
-                    <Form.Item label="名称" >
-                        {getFieldDecorator('name', {
-                            rules: [{ required: true, message: '请输入名称!' }],
+                    <Form.Item label="姓名" >
+                        {getFieldDecorator('realname', {
+                            rules: [{ required: true, message: '请输入姓名!' }],
                         })(<Input />)}
                     </Form.Item>
-                    <Form.Item label="数量" >
-                        {getFieldDecorator('num', {
-                            rules: [{ required: true, message: '请输入数量!' }],
-                        })(<InputNumber min={0} style={{ width: '100%' }} />)}
+                    <Form.Item label="电话" >
+                        {getFieldDecorator('telephone', {
+                            rules: [{ required: true, message: '请输入电话号码!' }],
+                        })(<Input />)}
                     </Form.Item>
-                    <Form.Item label="父分类id">
-                        {getFieldDecorator('parentId', {
-                            rules: []
-                        })(
-                            <Select>{children}</Select>
-                        )}
+                    <Form.Item label="密码">
+                        {getFieldDecorator('password', {
+                            rules: [{ required: true, message: '请输入密码!' }],
+                        })(<Input.Password />)}
+                    </Form.Item>
+                    <Form.Item label="状态">
+                        {getFieldDecorator('status', {
+                            rules: [{ required: true, message: '请输入状态!' }],
+                        })(<Input />)}
                     </Form.Item>
 
                 </Form>
@@ -68,4 +68,4 @@ const mapPropsToFields = (props) => {
 
 export default Form.create({
     mapPropsToFields
-})(CategoryForm);
+})(WaiterForm);

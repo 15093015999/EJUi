@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'dva';
 import styles from './IndexPage.css';
 import { Link } from 'dva/router';
-import { Layout, Menu, Breadcrumb, Icon, PageHeader, Button,Avatar,Dropdown} from 'antd';
+import { Layout, Menu, Breadcrumb, Icon,PageHeader,Button } from 'antd';
 
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -19,24 +19,17 @@ class IndexPage extends React.Component {
   };
 
   render() {
-    const menu = (
-      <Menu>
-        <Menu.Item key="0">
-          <Button>退出</Button>
-        </Menu.Item>
-      </Menu>
-    );
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
           <div className={styles.logo} >
           </div>
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <Menu theme="dark" mode="inline">
 
             <Menu.Item key="1">
               <Link to="/customer">
                 <span>
-                  <Icon type="user" />
+                  <Icon type="reload" />
                   <span className={styles.navitem}>用户管理</span>
                 </span>
               </Link>
@@ -63,8 +56,34 @@ class IndexPage extends React.Component {
             <Menu.Item key="4">
               <Link to="/product">
                 <span>
-                  <Icon type="shopping" />
+                  <Icon type="shopping-cart" />
                   <span className={styles.navitem}>商品管理</span>
+                </span>
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item key="5">
+              <Link to="/address">
+                <span>
+                  <Icon type="home" />
+                  <span className={styles.navitem}>地址管理</span>
+                </span>
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item key="6">
+              <Link to="/comment">
+                <span>
+                  <Icon type="like" />
+                  <span className={styles.navitem}>评论管理</span>
+                </span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="7">
+              <Link to="/waiter">
+                <span>
+                  <Icon type="team" />
+                  <span className={styles.navitem}>服务员管理</span>
                 </span>
               </Link>
             </Menu.Item>
@@ -78,24 +97,23 @@ class IndexPage extends React.Component {
                 </span>
               }
             >
-              <Menu.Item key="5">Tom</Menu.Item>
-              <Menu.Item key="6">Bill</Menu.Item>
-              <Menu.Item key="7">Alex</Menu.Item>
+              <Menu.Item key="8">Tom</Menu.Item>
+              <Menu.Item key="9">Bill</Menu.Item>
+              <Menu.Item key="10">Alex</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
         <Layout>
-          <PageHeader
-            onBack={() => window.history.back(-1)}
-            title="爱管不管"
-            extra={[
-              // <Button key="3">Operation</Button>,
-              // <Button key="2">Operation</Button>,
-              this.login?<Button key="9" type="primary">登录</Button>:
-              <Dropdown key="10" overlay={menu}>
-                <Avatar style={{ backgroundColor: '#87d068' }} icon="user" />
-              </Dropdown>
-            ]}
+          <PageHeader 
+          onBack={() => window.history.back(-1)} 
+          title="爱管不管" 
+          extra={[
+            // <Button key="3">Operation</Button>,
+            // <Button key="2">Operation</Button>,
+            <Button key="1" type="primary">
+              登录
+            </Button>,
+          ]}
           />
           <Content style={{ margin: '0 16px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>
