@@ -22,11 +22,8 @@ class CategoryTree extends React.Component {
     }
 
     render() {
-        // 父组件传递给子组件值
-        const { visible, onCancel, tree } = this.props;
-        // console.log(tree)
-        // console.log(this.dispalyTree(tree))
 
+        const { visible, onCancel, tree } = this.props;
 
         return (
             <Modal

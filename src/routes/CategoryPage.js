@@ -38,6 +38,7 @@ class CategoryPage extends React.Component {
             .then((result) => {
                 // console.log('查询到的数据为：', result.data);
                 this.children = []
+                this.children.push(<Option key={0} value={null}>无</Option>)
                 result.data.forEach((item) => {
                     this.children.push(<Option key={item.id} value={item.id}>{item.name}</Option>);
                 })
@@ -130,7 +131,7 @@ class CategoryPage extends React.Component {
         nodes.forEach((node, index) => {
             if (node.parentId === null) {
                 tree.push(node);
-                nodes.splice(index, 1);
+                // nodes.splice(index, 1);
                 this.backTree(node, nodes)
             }
         })
