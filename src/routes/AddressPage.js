@@ -2,10 +2,12 @@
 
 import React from 'react';
 import styles from './AddressPage.css';
-import { Button, Table, Icon, Popconfirm, message } from 'antd';
+import { Button, Table, Icon, Popconfirm, message, } from 'antd';
 import axios from '../utils/axios';
 import AddressForm from './AddressForm';
 // import { Link } from 'dva/router';
+
+const ButtonGroup = Button.Group;
 
 class AddressPage extends React.Component {
     //局部状态state
@@ -163,24 +165,26 @@ class AddressPage extends React.Component {
             }
         }]
 
+
         //返回结果
         return (
             <div className="adress">
                 <div className={styles.header}>地址管理</div>
+                <div className={styles.titleheader}>
+                    <div className={styles.fill} />
+                    <ButtonGroup>
+                        <Button type="primary" onClick={this.toAdd.bind(this)}>添加地址</Button>
 
-                <div className={styles.buttonsbmit}>
-                    &nbsp;<Button type="primary" onClick={this.toAdd.bind(this)}>添加地址</Button>
-
-                    &nbsp;<Popconfirm
-                        placement="bottomLeft"
-                        title={text}
-                        onConfirm={this.batchDelete}
-                        okText="是"
-                        cancelText="否">
-                        <Button type="danger" >批量删除</Button>
-                    </Popconfirm>
-
-                    {/* &nbsp;<Button ><Link to="/" ><Icon type='' /></Link ></Button> */}
+                        <Popconfirm
+                            placement="bottomLeft"
+                            title={text}
+                            onConfirm={this.batchDelete}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button type="danger" >批量删除</Button>
+                        </Popconfirm>
+                    </ButtonGroup>
                 </div>
 
                 <Table
