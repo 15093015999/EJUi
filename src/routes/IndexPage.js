@@ -4,7 +4,6 @@ import { connect } from 'dva';
 import styles from './IndexPage.css';
 import { Link } from 'dva/router';
 import { Layout, Menu, Breadcrumb, Icon, PageHeader, Button } from 'antd';
-
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -17,7 +16,7 @@ onCollapse = collapsed => {
   this.setState({ collapsed });
 };
 
-defaultSelected=(path)=>{
+onSelected=(path)=>{
   switch(path){
     case '/customer':return ['1'];
     case '/category':return ['2'];
@@ -35,7 +34,7 @@ render() {
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse} >
         <div className={styles.logo} ></div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={this.defaultSelected(this.props.location.pathname)}>
+        <Menu theme="dark" mode="inline" selectedKeys={this.onSelected(this.props.pathModel.currentPath)}>
           <Menu.Item key="1">
             <Link to="/customer">
               <span>
@@ -136,4 +135,4 @@ render() {
   );
 }
 }
-export default connect()(IndexPage);
+export default connect(({pathModel})=>({pathModel}))(IndexPage);

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Modal, Input, } from 'antd'
-
+import { Form, Modal, Input,Select } from 'antd'
+const { Option } = Select;
 class CustomerForm extends React.Component {
 
     render() {
@@ -37,7 +37,10 @@ class CustomerForm extends React.Component {
                     </Form.Item>
                     <Form.Item label="电话" >
                         {getFieldDecorator('telephone', {
-                            rules: [{ required: true, message: '请输入电话号码!' }],
+                            rules: [
+                                {pattern: new RegExp(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/),message: '请输入正确的手机号'},
+                                { required: true, message: '请输入电话号码!' }
+                            ],
                         })(<Input />)}
                     </Form.Item>
                     <Form.Item label="密码">
@@ -48,7 +51,12 @@ class CustomerForm extends React.Component {
                     <Form.Item label="状态">
                         {getFieldDecorator('status', {
                             rules: [{ required: true, message: '请输入状态!' }],
-                        })(<Input />)}
+                        })(
+                            <Select>
+                                <Option key="在线" value="在线">{"在线"}</Option>
+                                <Option key="离线" value="离线">{"离线"}</Option>
+                            </Select>
+                        )}
                     </Form.Item>
 
                 </Form>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './ProductPage.css';
-import { Button, Table, Icon, Popconfirm, message, Input,} from 'antd';
+import { Button, Table, Icon, Popconfirm, message, Input, } from 'antd';
 import axios from '../utils/axios'
 import ProductForm from './ProductForm'
 import ButtonGroup from 'antd/lib/button/button-group';
@@ -21,7 +21,7 @@ class ProductPage extends React.Component {
 
     }
   }
-  UNSAFE_componentWillMount () {
+  UNSAFE_componentWillMount() {
     this.handlerLoad();
   }
   //   componentDidMount() {
@@ -64,6 +64,7 @@ class ProductPage extends React.Component {
           this.handlerLoad();
         }
       })
+    this.setState({ selectedRowKeys: [] })
   }
   onSelectChange = selectedRowKeys => {
     this.setState({ selectedRowKeys });
@@ -109,16 +110,16 @@ class ProductPage extends React.Component {
   }
 
   //模糊查询
-  handleSearch=(value)=>{
-    axios.get('product/findByLikeName',{params:{name:value}})
-    .then((result) => {
+  handleSearch = (value) => {
+    axios.get('product/findByLikeName', { params: { name: value } })
+      .then((result) => {
         if (200 === result.status) {
-            this.setState({
-                list: result.data
-            })
+          this.setState({
+            list: result.data
+          })
         }
-    })
-}
+      })
+  }
 
   render() {
     const { selectedRowKeys } = this.state;
@@ -164,23 +165,23 @@ class ProductPage extends React.Component {
 
     let titleHeader = (
       <div className={styles.titleheader}>
-      <Search
+        <Search
           placeholder="输入查询内容"
           onSearch={value => this.handleSearch(value)}
           style={{ width: 200 }}
-      />
-      <div className={styles.fill}/>
-      <ButtonGroup>
+        />
+        <div className={styles.fill} />
+        <ButtonGroup>
           <Button type="primary" onClick={this.toAdd.bind(this)}>添加商品</Button>
           <Popconfirm
-        placement="bottomLeft"
-        title={text}
-        onConfirm={this.batchDelete}
-        okText="Yes"
-        cancelText="No"
-      >
-        <Button type="danger">批量删除</Button>
-      </Popconfirm>
+            placement="bottomLeft"
+            title={text}
+            onConfirm={this.batchDelete}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="danger">批量删除</Button>
+          </Popconfirm>
         </ButtonGroup>
       </div>
     );
@@ -191,7 +192,7 @@ class ProductPage extends React.Component {
       <div className="product">
         <div className={styles.header}>商品管理</div>
 
-        
+
         <Table
           // bordered 
           rowKey="id"

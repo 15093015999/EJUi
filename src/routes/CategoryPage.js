@@ -6,6 +6,7 @@ import { Input, Button, Table, Icon, Popconfirm, message, Select } from 'antd';
 import axios from '../utils/axios'
 import CategoryForm from './CategoryForm'
 import CategoryTree from './CategoryTree';
+
 const { Option } = Select;
 const Search = Input.Search;
 const ButtonGroup = Button.Group;
@@ -29,8 +30,9 @@ class CategoryPage extends React.Component {
     UNSAFE_componentWillMount() {
         // 查询数据，进行数据绑定
         this.handlerLoad();
-        // this.reloadDate();
     }
+
+
 
     //封装查询
     handlerLoad() {
@@ -62,6 +64,8 @@ class CategoryPage extends React.Component {
                 }
             })
     }
+
+    //
     batchDelete = () => {
         axios.post("/category/batchDelete", { ids: this.state.selectedRowKeys })
             .then((result) => {
@@ -70,6 +74,7 @@ class CategoryPage extends React.Component {
                     this.handlerLoad();
                 }
             })
+        this.setState({ selectedRowKeys: [] })
     }
     onSelectChange = selectedRowKeys => {
         this.setState({ selectedRowKeys });
@@ -137,7 +142,7 @@ class CategoryPage extends React.Component {
         })
         this.setState({ tree, visibleTree: true })
     }
-    
+
     //深度优先遍历生成树
     backTree(tree, nodes) {
         nodes.forEach((node) => {
@@ -191,7 +196,7 @@ class CategoryPage extends React.Component {
         }, {
             title: "操作",
             align: "center",
-            render: (table, Record) => {
+            render: ( Record) => {
                 return (
                     <div>
                         <Popconfirm placement="top" title={text}
@@ -212,25 +217,25 @@ class CategoryPage extends React.Component {
 
         let titleHeader = (
             <div className={styles.titleheader}>
-            <Search
-                placeholder="输入查询内容"
-                onSearch={value => this.handleSearch(value)}
-                style={{ width: 200 }}
-            />
-            <div className={styles.fill}/>
-            <ButtonGroup>
-                <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
-                <Button onClick={this.toTree.bind(this)}>分类树</Button>
-                <Popconfirm
-                    placement="bottomLeft"
-                    title={text}
-                    onConfirm={this.batchDelete}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <Button type="danger" >批量删除</Button>
-                </Popconfirm>
-            </ButtonGroup>
+                <Search
+                    placeholder="输入查询内容"
+                    onSearch={value => this.handleSearch(value)}
+                    style={{ width: 200 }}
+                />
+                <div className={styles.fill} />
+                <ButtonGroup>
+                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加分类</Button>
+                    <Button onClick={this.toTree.bind(this)}>分类树</Button>
+                    <Popconfirm
+                        placement="bottomLeft"
+                        title={text}
+                        onConfirm={this.batchDelete}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="danger" >批量删除</Button>
+                    </Popconfirm>
+                </ButtonGroup>
             </div>
         );
 

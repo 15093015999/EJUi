@@ -29,7 +29,7 @@ class OrderPage extends React.Component {
             productList: [],
             customerList: [],
             waiterList: [],
-            addressList: []
+            addressList: [],
         }
     }
 
@@ -70,6 +70,7 @@ class OrderPage extends React.Component {
                                 this.reloadData();
                             }
                         })
+                    this.setState({ selectedRowKeys: [] })
                 }
             }
         )
@@ -120,6 +121,7 @@ class OrderPage extends React.Component {
                 if (err) {
                     return;
                 }
+                console.log(values)
                 axios.post("order/saveOrUpdate", values)
                     .then(
                         (result) => {
@@ -136,6 +138,10 @@ class OrderPage extends React.Component {
 
     saveFormRef = formRef => {
         this.formRef = formRef;
+    }
+
+    saveOrderLineFormRef = formRef => {
+        this.orderLineFormRef = formRef;
     }
 
     //*核心函数*//回调封装
@@ -222,7 +228,7 @@ class OrderPage extends React.Component {
     }
 
     handleOrderLineCreate = () => {
-        const form = this.formRef.props.form;
+        const form = this.orderLineFormRef.props.form;
         form.validateFields(
             (err, values) => {
                 if (err) {
@@ -293,6 +299,7 @@ class OrderPage extends React.Component {
                     }
                 }
             ];
+            console.log(this.state.listPlus)
             for (let i = 0; i < this.state.listPlus.length; i++) {
                 if (ecord.id === this.state.listPlus[i].order.id) {
                     return <Table rowKey='id' columns={columns} dataSource={this.state.listPlus[i].orderLines} pagination={false} rowSelection={rowSelection} />
@@ -410,7 +417,7 @@ class OrderPage extends React.Component {
 
                     <OrderLineForm
                         initData={this.state.orderLine}
-                        wrappedComponentRef={this.saveFormRef}
+                        wrappedComponentRef={this.saveOrderLineFormRef}
                         visible={this.state.visibleOrderLine}
                         onCancel={this.handleOrderLineCancel}
                         onCreate={this.handleOrderLineCreate}

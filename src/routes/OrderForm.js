@@ -7,6 +7,7 @@ class OrderForm extends React.Component {
         // 父组件传递给子组件值
         const { visible, onCancel, onCreate, form, customerList, waiterList, addressList } = this.props;
         const { getFieldDecorator } = form;
+        getFieldDecorator('id')
         return (
             <Modal
                 visible={visible}
@@ -17,12 +18,6 @@ class OrderForm extends React.Component {
                 onOk={onCreate}
             >
                 <Form layout="vertical">
-
-                    <Form.Item label="订单号">
-                        {getFieldDecorator('id', {
-                            rules: [{ required: true, message: '请输入订单号' }],
-                        })(<Input />)}
-                    </Form.Item>
 
                     <Form.Item label="下单时间">
                         {getFieldDecorator('orderTime', {

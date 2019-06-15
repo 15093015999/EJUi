@@ -17,7 +17,7 @@ class CommentPage extends React.Component {
             loading: true,
             list: [],
             visible: false,
-            orderList:[]
+            orderList: []
         }
     }
 
@@ -59,6 +59,7 @@ class CommentPage extends React.Component {
                     this.handlerLoad();
                 }
             })
+        this.setState({ selectedRowKeys: [] })
     }
     //添加
     onSelectChange = selectedRowKeys => {
@@ -94,15 +95,15 @@ class CommentPage extends React.Component {
     }
 
 
-    toCommentModal(commit){
+    toCommentModal(commit) {
         axios.get("/order/findAll")
-        .then((result) => {
-            let templist=[];
-            result.data.forEach((item)=>{
-                templist.push(<Option key={item.id} value={item.id}>{item.id}</Option>)
+            .then((result) => {
+                let templist = [];
+                result.data.forEach((item) => {
+                    templist.push(<Option key={item.id} value={item.id}>{item.id}</Option>)
+                })
+                this.setState({ comment: commit, orderList: templist, visible: true })
             })
-            this.setState({comment:commit ,orderList: templist, visible: true })
-        })
     }
 
     //添加

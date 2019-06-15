@@ -57,8 +57,8 @@ class AddressForm extends React.Component {
         getFieldDecorator("id");
         getFieldDecorator("status");
         getFieldDecorator("phtot");
-        
-        
+
+
         return (
             <Modal
                 visible={visible}
@@ -71,7 +71,7 @@ class AddressForm extends React.Component {
                     <Form.Item label="省/市/区" >
                         {getFieldDecorator('addr', {
                             rules: [{ required: true, message: '请输入!' }],
-                        })(<Cascader options={this.options}/>)}
+                        })(<Cascader options={this.options} />)}
 
                     </Form.Item>
                     <Form.Item label="详细地址">

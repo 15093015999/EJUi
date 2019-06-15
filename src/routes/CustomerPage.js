@@ -61,7 +61,7 @@ class CustomerPage extends React.Component {
           this.handlerLoad();
         }
       })
-      this.setState({selectedRowKeys:[]})
+    this.setState({ selectedRowKeys: [] })
   }
   //添加用户
   onSelectChange = selectedRowKeys => {
