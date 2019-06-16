@@ -32,6 +32,11 @@ class CategoryPage extends React.Component {
         this.handlerLoad();
     }
 
+    componentWillUnmount = () => {
+        this.setState = (state,callback)=>{
+          return;
+        };
+    }
 
 
     //封装查询

@@ -39,6 +39,12 @@ class OrderPage extends React.Component {
         this.reloadData();
     }
 
+    componentWillUnmount = () => {
+        this.setState = (state,callback)=>{
+          return;
+        };
+    }
+
 
     //刷新数据
     reloadData = () => {
@@ -299,7 +305,6 @@ class OrderPage extends React.Component {
                     }
                 }
             ];
-            console.log(this.state.listPlus)
             for (let i = 0; i < this.state.listPlus.length; i++) {
                 if (ecord.id === this.state.listPlus[i].order.id) {
                     return <Table rowKey='id' columns={columns} dataSource={this.state.listPlus[i].orderLines} pagination={false} rowSelection={rowSelection} />

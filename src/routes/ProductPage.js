@@ -2,11 +2,12 @@
 
 import React from 'react';
 import styles from './ProductPage.css';
-import { Button, Table, Icon, Popconfirm, message, Input, } from 'antd';
+import { Button, Table, Icon, Popconfirm, message, Input, Select } from 'antd';
 import axios from '../utils/axios'
 import ProductForm from './ProductForm'
 import ButtonGroup from 'antd/lib/button/button-group';
 const Search = Input.Search;
+const { Option } = Select;
 
 
 class ProductPage extends React.Component {
@@ -18,17 +19,18 @@ class ProductPage extends React.Component {
       loading: true,
       list: [],
       visible: false,
-
+      categoryList: []
     }
   }
   UNSAFE_componentWillMount() {
     this.handlerLoad();
   }
-  //   componentDidMount() {
-  //     // 查询数据，进行数据绑定
 
-  //     // this.reloadDate();
-  //   }
+  componentWillUnmount = () => {
+    this.setState = (state, callback) => {
+      return;
+    };
+  }
 
   //封装查询
   handlerLoad() {
@@ -97,16 +99,26 @@ class ProductPage extends React.Component {
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
+
+  toProductModal(callBack) {
+
+    axios.get('/category/selectByExample').then((result) => {
+      let templist = [];
+      result.data.forEach((item) => {
+        templist.push(<Option key={item.id} value={item.id}>{item.name}</Option>)
+      })
+      this.setState({ categoryList: templist })
+      callBack();
+    })
+  }
+
   //添加
   toAdd() {
-    this.setState({ product: {}, visible: true })
+    this.toProductModal(() => { this.setState({ product: {}, visible: true }) })
   }
   //更新
   toEdit(record) {
-    //alert(JSON.stringify(record));
-    this.setState({ product: record })
-    this.setState({ visible: true })
-
+    this.toProductModal(() => { this.setState({ product: record, visible: true }) })
   }
 
   //模糊查询
@@ -147,9 +159,12 @@ class ProductPage extends React.Component {
       title: "头像",
       dataIndex: "photo"
     }, {
+      title: "分类",
+      dataIndex: "categoryId"
+    }, {
       title: "操作",
       align: "center",
-      render: (table, Record) => {
+      render: (Record) => {
         return (
           <div>
             <Popconfirm placement="top" title={text}
@@ -211,8 +226,9 @@ class ProductPage extends React.Component {
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
-          onCreate={this.handleCreate} />
-
+          onCreate={this.handleCreate}
+          categoryList={this.state.categoryList}
+        />
       </div>
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Modal, Input, Cascader } from 'antd'
+import { Form, Modal, Input, Cascader, Select } from 'antd'
 class AddressForm extends React.Component {
     constructor() {
         super();
@@ -51,7 +51,7 @@ class AddressForm extends React.Component {
             },
         }
         // 父组件传递给子组件值
-        const { visible, onCancel, onCreate, form } = this.props;
+        const { visible, onCancel, onCreate, form ,customerList } = this.props;
         const { getFieldDecorator } = form;
         // 将表单中没有出现的值做一个双向数据绑定
         getFieldDecorator("id");
@@ -83,6 +83,12 @@ class AddressForm extends React.Component {
                         {getFieldDecorator('telephone', {
                             rules: [{ required: true, message: '请输入!' }],
                         })(<Input />)}
+                    </Form.Item>
+
+                    <Form.Item label="用户">
+                        {getFieldDecorator('customerId', {
+                            rules: [{ required: true, message: '请输入!' }],
+                        })(<Select>{customerList}</Select>)}
                     </Form.Item>
 
                 </Form>

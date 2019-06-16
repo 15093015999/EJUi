@@ -1,10 +1,11 @@
 //地址管理页面
 import React from 'react';
 import styles from './AddressPage.css';
-import { Button, Table, Icon, Popconfirm, message, } from 'antd';
+import { Button, Table, Icon, Popconfirm, message, Select } from 'antd';
 import axios from '../utils/axios';
 import AddressForm from './AddressForm';
 // import { Link } from 'dva/router';
+const { Option } = Select
 
 const ButtonGroup = Button.Group;
 
@@ -17,12 +18,19 @@ class AddressPage extends React.Component {
             loading: true,
             list: [],
             visible: false,
+            customerList: []
         }
     }
 
     UNSAFE_componentWillMount() {
         // 查询数据，进行数据绑定
         this.handlerLoad();
+    }
+
+    componentWillUnmount = () => {
+        this.setState = (state,callback)=>{
+          return;
+        };
     }
 
     //封装查询
@@ -100,10 +108,24 @@ class AddressPage extends React.Component {
     saveFormRef = formRef => {
         this.formRef = formRef;
     }
+
+    toProductModal(callBack) {
+
+        axios.get('/customer/findAll').then((result) => {
+            let templist = [];
+            result.data.forEach((item) => {
+                templist.push(<Option key={item.id} value={item.id}>{item.realname}</Option>)
+            })
+            this.setState({ customerList: templist })
+            callBack();
+        })
+    }
+
     //添加
     toAdd() {
         // 将默认值置空,模态框打开
-        this.setState({ address: {}, visible: true })
+        this.toProductModal(() => { this.setState({ address: {}, visible: true }) })
+
     };
     //更新
     toEdit(record) {
@@ -114,10 +136,8 @@ class AddressPage extends React.Component {
             telephone: record.telephone,
             customerId: record.customerId
         }
-        // 更前先先把要更新的数据设置到state中
-        this.setState({ address: obj })
-        // 将record值绑定表单中
-        this.setState({ visible: true })
+        this.toProductModal(() => { this.setState({ address: obj, visible: true }) })
+
     }
 
     render() {
@@ -146,6 +166,9 @@ class AddressPage extends React.Component {
             title: "联系方式",
             dataIndex: "telephone"
         }, {
+            title: "用户编号",
+            dataIndex: "customerId"
+        }, {
             title: "操作",
             width: 150,
             align: "center",
@@ -156,31 +179,30 @@ class AddressPage extends React.Component {
                             onConfirm={this.handleDelete.bind(this, record.id)} okText="是" cancelText="否">
                             <Button size="small" ><Icon type="delete"></Icon></Button>
                         </Popconfirm>
-
                         &nbsp;&nbsp;
-            <Button size="small" onClick={this.toEdit.bind(this, record)}><Icon type='edit' /></Button>
+                        <Button size="small" onClick={this.toEdit.bind(this, record)}><Icon type='edit' /></Button>
                     </div>
                 )
             }
         }]
 
         let titleHeader = (
-        <div className={styles.titleheader}>
-                    <div className={styles.fill} />
-                    <ButtonGroup>
-                        <Button type="primary" onClick={this.toAdd.bind(this)}>添加地址</Button>
+            <div className={styles.titleheader}>
+                <div className={styles.fill} />
+                <ButtonGroup>
+                    <Button type="primary" onClick={this.toAdd.bind(this)}>添加地址</Button>
 
-                        <Popconfirm
-                            placement="bottomLeft"
-                            title={text}
-                            onConfirm={this.batchDelete}
-                            okText="Yes"
-                            cancelText="No"
-                        >
-                            <Button type="danger" >批量删除</Button>
-                        </Popconfirm>
-                    </ButtonGroup>
-                </div>
+                    <Popconfirm
+                        placement="bottomLeft"
+                        title={text}
+                        onConfirm={this.batchDelete}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="danger" >批量删除</Button>
+                    </Popconfirm>
+                </ButtonGroup>
+            </div>
         );
 
 
@@ -188,7 +210,7 @@ class AddressPage extends React.Component {
         return (
             <div className="adress">
                 <div className={styles.header}>地址管理</div>
-                
+
 
                 <Table
                     rowKey="id"
@@ -207,6 +229,7 @@ class AddressPage extends React.Component {
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                    customerList={this.state.customerList}
                 />
             </div>
 

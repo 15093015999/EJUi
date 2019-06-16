@@ -1,9 +1,9 @@
 import React from 'react';
-import { Form, Modal, Input, InputNumber} from 'antd'
+import { Form, Modal, Input, InputNumber, Select } from 'antd'
 
 class ProductForm extends React.Component {
   render() {
-    const { visible, onCancel, onCreate, form } = this.props;
+    const { visible, onCancel, onCreate, form, categoryList } = this.props;
     const { getFieldDecorator } = form;
     getFieldDecorator('id')
     return (
@@ -33,7 +33,7 @@ class ProductForm extends React.Component {
               parser={value => value.replace(/\$\s?|(,*)/g, '')}
               min={0}
               style={{ width: '100%' }}
-          />)}
+            />)}
           </Form.Item>
           <Form.Item label="状态">
             {getFieldDecorator('status', {
@@ -42,10 +42,14 @@ class ProductForm extends React.Component {
           </Form.Item>
           <Form.Item label="头像">
             {getFieldDecorator('photo', {
-              rules: [{ required: true, message: '请输入商品图片!' }],
+              rules: [{ required: true, message: '请输入头像地址!' }],
             })(<Input />)}
           </Form.Item>
-
+          <Form.Item label="分类">
+            {getFieldDecorator('categoryId', {
+              rules: [{ required: true, message: '请输入分类!' }],
+            })(<Select>{categoryList}</Select>)}
+          </Form.Item>
         </Form>
       </Modal>
     );

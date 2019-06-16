@@ -24,12 +24,13 @@ class WaiterPage extends React.Component {
   UNSAFE_componentWillMount() {
     this.handlerLoad();
   }
-  //   componentDidMount() {
-  //     // 查询数据，进行数据绑定
 
-  //     // this.reloadDate();
-  //   }
-
+  componentWillUnmount = () => {
+    this.setState = (state, callback) => {
+      return;
+    };
+  }
+  
   //封装查询用户
   handlerLoad() {
     axios.get("/waiter/findAll")
