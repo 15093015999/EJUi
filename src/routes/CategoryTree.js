@@ -5,7 +5,7 @@ const { TreeNode } = Tree;
 
 class CategoryTree extends React.Component {
 
-    dispalyTree(tree) {
+    displayTree(tree) {
         let treeTag = []
         tree.forEach((node) => {
             treeTag.push(<TreeNode key={node.id} title={node.name}>{this.backTree(node)}</TreeNode>)
@@ -34,7 +34,7 @@ class CategoryTree extends React.Component {
                 onCancel={onCancel}
             >
                 <Tree showLine defaultExpandedKeys={['0-0-0']} onSelect={this.onSelect}>
-                    {this.dispalyTree(tree)}
+                    {this.displayTree(tree)}
                 </Tree>
             </Modal>
         );
