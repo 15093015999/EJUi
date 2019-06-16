@@ -26,12 +26,11 @@ class CustomerPage extends React.Component {
     // 查询数据，进行数据绑定
     this.handlerLoad();
   }
-
   componentWillUnmount = () => {
-    this.setState = (state, callback) => {
+    this.setState = (state,callback)=>{
       return;
     };
-  }
+}
 
   //封装查询用户
   handlerLoad() {
