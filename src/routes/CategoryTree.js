@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Tree } from 'antd'
-import { connect } from 'dva';
+// import { connect } from 'dva';
 const { TreeNode } = Tree;
 
 class CategoryTree extends React.Component {
@@ -40,4 +40,4 @@ class CategoryTree extends React.Component {
         );
     }
 }
-export default connect()(CategoryTree);
+export default CategoryTree;

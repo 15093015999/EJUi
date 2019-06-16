@@ -6,6 +6,7 @@ import { Input, Button, Table, Icon, Modal, message, Popconfirm, Select } from '
 import axios from '../utils/axios'
 import OrderForm from './OrderForm';
 import OrderLineForm from './OrderLineForm'
+import moment from 'moment'
 const { Option } = Select;
 const Search = Input.Search;
 const ButtonGroup = Button.Group;
@@ -49,16 +50,22 @@ class OrderPage extends React.Component {
     //刷新数据
     reloadData = () => {
         let templist = [];
-        axios.get("/order/findAll")
-            .then((result) => {
-                this.setState({ list: result.data })
-                result.data.forEach((order) => {
-                    axios.get(`/order/findOrderAndOrderLineByOrderId?id=${order.id}`)
-                        .then((res) => { templist.push(res.data) })
-                })
-                this.setState({ listPlus: templist })
+        // axios.get("/order/findAll")
+        //     .then((result) => {
+        //         result.data.forEach((order) => {
+        //             axios.get(`/order/findOrderAndOrderLineByOrderId?id=${order.id}`)
+        //                 .then((res) => { templist.push(res.data) })
+        //         })
+        //         this.setState({ listPlus: templist,list: result.data })
+        //     })
+        //     .finally(() => { this.setState({ loading: false }); })
+        axios.get('/order/findAllOrderWithOrderLines').then((result)=>{
+            result.data.forEach((item)=>{
+                templist.push(item.order)
             })
-            .finally(() => { this.setState({ loading: false }); })
+            this.setState({ listPlus: result.data,list: templist })
+        })
+        .finally(() => { this.setState({ loading: false }); })
     }
 
     //批量删除处理
@@ -317,11 +324,14 @@ class OrderPage extends React.Component {
         let columns = [
             {
                 title: "订单号",
-                dataIndex: "id"
+                dataIndex: "id",
+                // sorter: true
             },
             {
                 title: "下单时间",
-                dataIndex: "orderTime"
+                dataIndex: "orderTime",
+                // sorter: true,
+                render: val => <span>{moment(val).utc().format('YYYY-MM-DD HH:mm:ss')}</span>
             },
             {
                 title: "金额",

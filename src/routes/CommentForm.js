@@ -19,7 +19,7 @@ class CommentForm extends React.Component {
         const { getFieldDecorator } = form;
         // 将表单中没有出现的值做一个双向数据绑定
         getFieldDecorator("id");
-
+        getFieldDecorator('commentTime')
         return (
             <Modal
                 visible={visible}
@@ -31,11 +31,6 @@ class CommentForm extends React.Component {
                 <Form layout="vertical" {...formLayout}>
                     <Form.Item label="评价内容" >
                         {getFieldDecorator('content', {
-                            rules: [{ required: true, message: '请输入!' }],
-                        })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="评价时间" >
-                        {getFieldDecorator('commentTime', {
                             rules: [{ required: true, message: '请输入!' }],
                         })(<Input />)}
                     </Form.Item>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Modal, Input, InputNumber, Select } from 'antd'
+import { Form, Modal, InputNumber, Select } from 'antd'
 
 class OrderForm extends React.Component {
 
@@ -8,6 +8,7 @@ class OrderForm extends React.Component {
         const { visible, onCancel, onCreate, form, customerList, waiterList, addressList } = this.props;
         const { getFieldDecorator } = form;
         getFieldDecorator('id')
+        getFieldDecorator('orderTime')
         return (
             <Modal
                 visible={visible}
@@ -18,12 +19,6 @@ class OrderForm extends React.Component {
                 onOk={onCreate}
             >
                 <Form layout="vertical">
-
-                    <Form.Item label="下单时间">
-                        {getFieldDecorator('orderTime', {
-                            rules: [{ required: true, message: '请输入下单时间!' }],
-                        })(<Input />)}
-                    </Form.Item>
 
                     <Form.Item label="金额">
                         {getFieldDecorator('total', {

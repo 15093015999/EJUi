@@ -6,6 +6,7 @@ import { Button, Table, Icon, Popconfirm, message, Select } from 'antd';
 import axios from '../utils/axios';
 import CommentForm from './CommentForm';
 import ButtonGroup from 'antd/lib/button/button-group';
+import moment from 'moment'
 const { Option } = Select;
 
 class CommentPage extends React.Component {
@@ -27,8 +28,8 @@ class CommentPage extends React.Component {
     }
 
     componentWillUnmount = () => {
-        this.setState = (state,callback)=>{
-          return;
+        this.setState = (state, callback) => {
+            return;
         };
     }
 
@@ -136,7 +137,9 @@ class CommentPage extends React.Component {
             dataIndex: "content"
         }, {
             title: "评价时间",
-            dataIndex: "commentTime"
+            dataIndex: "commentTime",
+            // sorter: true,
+            render: val => <span>{moment(val).utc().format('YYYY-MM-DD HH:mm:ss')}</span>
         }, {
             title: "订单号",
             dataIndex: "orderId"
