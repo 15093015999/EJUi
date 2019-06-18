@@ -33,8 +33,8 @@ class CategoryPage extends React.Component {
     }
 
     componentWillUnmount = () => {
-        this.setState = (state,callback)=>{
-          return;
+        this.setState = (state, callback) => {
+            return;
         };
     }
 
@@ -61,7 +61,7 @@ class CategoryPage extends React.Component {
     //删除
     handleDelete(id) {
         let obj = { 'id': id }
-        axios.post("/category/deleteByPrimaryKey", obj)
+        axios.post("/comment/deleteById/category/deleteByPrimaryKey", obj)
             .then((result) => {
                 if (200 === result.status) {
                     message.success(result.statusText)
@@ -201,7 +201,7 @@ class CategoryPage extends React.Component {
         }, {
             title: "操作",
             align: "center",
-            render: ( Record) => {
+            render: (Record) => {
                 return (
                     <div>
                         <Popconfirm placement="top" title={text}
