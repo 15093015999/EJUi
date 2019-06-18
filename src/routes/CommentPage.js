@@ -84,6 +84,7 @@ class CommentPage extends React.Component {
                 return;
             }
             // 表单校验完成后与后台通信进行保存
+            values.commentTime=Date
             axios.post("/comment/saveOrUpdate", values)
                 .then((result) => {
                     message.success(result.statusText)
@@ -139,7 +140,7 @@ class CommentPage extends React.Component {
             title: "评价时间",
             dataIndex: "commentTime",
             // sorter: true,
-            render: val => <span>{moment(val).utc().format('YYYY-MM-DD HH:mm:ss')}</span>
+            render: val => <span>{moment(val).utc(8).format('YYYY-MM-DD HH:mm:ss')}</span>
         }, {
             title: "订单号",
             dataIndex: "orderId"
