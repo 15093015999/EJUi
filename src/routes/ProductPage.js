@@ -157,7 +157,12 @@ class ProductPage extends React.Component {
       dataIndex: "status"
     }, {
       title: "头像",
-      dataIndex: "photo"
+      dataIndex: "photo",
+      render(text){
+        return (
+          <img width={40} height={40} src={"http://10.84.130.41:5000/avatars/"+text}/>
+        )
+      }
     }, {
       title: "分类",
       dataIndex: "categoryId"

@@ -60,8 +60,7 @@ class CategoryPage extends React.Component {
     }
     //删除
     handleDelete(id) {
-        let obj = { 'id': id }
-        axios.post("/category/deleteByPrimaryKey", obj)
+        axios.delete(`/category/deleteByPrimaryKey?id=${id}`)
             .then((result) => {
                 if (200 === result.status) {
                     message.success(result.statusText)
@@ -72,7 +71,7 @@ class CategoryPage extends React.Component {
 
     //
     batchDelete = () => {
-        axios.post("/category/batchDelete", { ids: this.state.selectedRowKeys })
+        axios.delete("/category/batchDelete", { ids: this.state.selectedRowKeys })
             .then((result) => {
                 if (200 === result.status) {
                     message.success(result.statusText)
@@ -98,7 +97,7 @@ class CategoryPage extends React.Component {
                 return;
             }
             // 表单校验完成后与后台通信进行保存
-            axios.post("/category/saveOrUpdate", values)
+            axios.put("/category/saveOrUpdate", values)
                 .then((result) => {
                     message.success(result.statusText)
                     // 重置表单
