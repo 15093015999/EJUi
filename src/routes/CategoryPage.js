@@ -33,8 +33,8 @@ class CategoryPage extends React.Component {
     }
 
     componentWillUnmount = () => {
-        this.setState = (state,callback)=>{
-          return;
+        this.setState = (state, callback) => {
+            return;
         };
     }
 
@@ -60,7 +60,8 @@ class CategoryPage extends React.Component {
     }
     //删除
     handleDelete(id) {
-        axios.delete(`/category/deleteByPrimaryKey?id=${id}`)
+        let obj = { 'id': id }
+        axios.post("/comment/deleteById/category/deleteByPrimaryKey", obj)
             .then((result) => {
                 if (200 === result.status) {
                     message.success(result.statusText)
@@ -71,7 +72,7 @@ class CategoryPage extends React.Component {
 
     //
     batchDelete = () => {
-        axios.delete("/category/batchDelete", { ids: this.state.selectedRowKeys })
+        axios.post("/category/batchDelete", { ids: this.state.selectedRowKeys })
             .then((result) => {
                 if (200 === result.status) {
                     message.success(result.statusText)
@@ -97,7 +98,7 @@ class CategoryPage extends React.Component {
                 return;
             }
             // 表单校验完成后与后台通信进行保存
-            axios.put("/category/saveOrUpdate", values)
+            axios.post("/category/saveOrUpdate", values)
                 .then((result) => {
                     message.success(result.statusText)
                     // 重置表单
@@ -200,7 +201,7 @@ class CategoryPage extends React.Component {
         }, {
             title: "操作",
             align: "center",
-            render: ( Record) => {
+            render: (Record) => {
                 return (
                     <div>
                         <Popconfirm placement="top" title={text}
