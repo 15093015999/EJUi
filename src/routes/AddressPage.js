@@ -36,7 +36,7 @@ class AddressPage extends React.Component {
     //封装查询
     handlerLoad() {
         this.setState({ loading: true });
-        axios.get("/address/selectByExample")
+        axios.get("/address/findAllAddressAndCustomer")
             .then((result) => {
                 //console.log('查询到的数据为：',result.data);
                 //将查询到的数据设置到state中
@@ -166,8 +166,8 @@ class AddressPage extends React.Component {
             title: "联系方式",
             dataIndex: "telephone"
         }, {
-            title: "用户编号",
-            dataIndex: "customerId"
+            title: "用户姓名",
+            dataIndex: "customer.realname"
         }, {
             title: "操作",
             width: 150,
