@@ -1,7 +1,32 @@
 import React from 'react';
-import { Form, Modal, Input, } from 'antd'
+import { Form, Modal, Input,Upload,Button,Icon } from 'antd'
 
 class WaiterForm extends React.Component {
+
+    state = {
+        fileList: [],
+      };
+      handleChange = info => {
+
+        let fileList = [...info.fileList];
+    
+        // 1. Limit the number of uploaded files
+        // Only to show two recent uploaded files, and old ones will be replaced by the new
+        fileList = fileList.slice(-1);
+    
+        // 2. Read from response and show file link
+        fileList = fileList.map(file => {
+          if (file.response) {
+            let photo = info.file.response;
+            this.props.form.setFieldsValue({photo});
+        }
+              return file;
+  });
+  this.setState({fileList});
+};
+
+
+
 
     render() {
         const formLayout = {
@@ -17,10 +42,19 @@ class WaiterForm extends React.Component {
         // 父组件传递给子组件值
         const { visible, onCancel, onCreate, form } = this.props;
         const { getFieldDecorator } = form;
+
+        const upload_props = {
+            name: 'formCollection',
+            action: 'http://10.84.130.41:5000/api/File/upload',
+            onChange: this.handleChange,
+            multiple: true,
+        };
+
         // 将表单中没有出现的值做一个双向数据绑定
         getFieldDecorator("id");
         getFieldDecorator("status");
-        getFieldDecorator("phtot");
+        getFieldDecorator("photo");
+        
         return (
             <Modal
                 visible={visible}
@@ -55,7 +89,13 @@ class WaiterForm extends React.Component {
                             rules: [{ required: true, message: '请输入状态!' }],
                         })(<Input />)}
                     </Form.Item>
-
+                    <Form.Item label="头像">
+                        <Upload {...upload_props} fileList={this.state.fileList}>
+                        <Button>
+                            <Icon type="upload" /> Click to Upload
+                        </Button>
+                        </Upload>
+                    </Form.Item>
                 </Form>
             </Modal>
         );
