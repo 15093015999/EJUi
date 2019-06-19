@@ -35,7 +35,7 @@ class ProductPage extends React.Component {
   //封装查询
   handlerLoad() {
     this.setState({ loading: true })
-    axios.get("/product/findAll")
+    axios.get("/product/findAllExtend")
       .then((result) => {
         //console.log('查询到的数据为：',result.data);
         //将查询到的数据设置到state中
@@ -165,7 +165,7 @@ class ProductPage extends React.Component {
       }
     }, {
       title: "分类",
-      dataIndex: "categoryId"
+      dataIndex: "category.name"
     }, {
       title: "操作",
       align: "center",

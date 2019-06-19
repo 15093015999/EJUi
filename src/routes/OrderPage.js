@@ -63,7 +63,7 @@ class OrderPage extends React.Component {
             result.data.forEach((item)=>{
                 templist.push(item.order)
             })
-            this.setState({ listPlus: result.data,list: templist })
+            this.setState({ listPlus: result.data,list: result.data })
         })
         .finally(() => { this.setState({ loading: false }); })
     }
@@ -313,7 +313,7 @@ class OrderPage extends React.Component {
                 }
             ];
             for (let i = 0; i < this.state.listPlus.length; i++) {
-                if (ecord.id === this.state.listPlus[i].order.id) {
+                if (ecord.order.id === this.state.listPlus[i].order.id) {
                     return <Table rowKey='id' columns={columns} dataSource={this.state.listPlus[i].orderLines} pagination={false} rowSelection={rowSelection} />
                 }
             }
@@ -324,30 +324,30 @@ class OrderPage extends React.Component {
         let columns = [
             {
                 title: "订单号",
-                dataIndex: "id",
+                dataIndex: "order.id",
                 // sorter: true
             },
             {
                 title: "下单时间",
-                dataIndex: "orderTime",
+                dataIndex: "order.orderTime",
                 // sorter: true,
                 render: val => <span>{moment(val).utc().format('YYYY-MM-DD HH:mm:ss')}</span>
             },
             {
                 title: "金额",
-                dataIndex: "total"
+                dataIndex: "order.total"
             },
             {
                 title: "下单用户",
-                dataIndex: "customerId"
+                dataIndex: "customerName"
             },
             {
-                title: "送货号",
-                dataIndex: "waiterId"
+                title: "送货人",
+                dataIndex: "waiterName"
             },
             {
                 title: "地址",
-                dataIndex: "addressId"
+                dataIndex: "address"
             },
             {
                 title: "操作",
