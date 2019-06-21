@@ -158,9 +158,10 @@ class ProductPage extends React.Component {
     }, {
       title: "头像",
       dataIndex: "photo",
+      align: "center",
       render(text){
         return (
-          <img width={40} height={40} src={"http://10.84.130.41:5000/avatars/"+text}/>
+          <img width={40} height={40} src={"http://47.100.17.233:5000/avatars/"+text} alt='无法连接服务器'/>
         )
       }
     }, {

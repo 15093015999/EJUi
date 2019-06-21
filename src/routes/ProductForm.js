@@ -9,7 +9,7 @@ class ProductForm extends React.Component {
 
     const upload_props = {
       name: 'formCollection',
-      action: 'http://10.84.130.41:5000/api/File/upload',
+      action: 'http://47.100.17.233:5000/api/File/upload',
       onChange: (info) => {
         console.log(info)
         if (info.file.status === 'done') {

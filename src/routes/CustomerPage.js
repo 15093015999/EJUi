@@ -113,6 +113,14 @@ class CustomerPage extends React.Component {
     // 将record值绑定表单中
     this.setState({ visible: true })
   }
+  //详情
+  toDetails(record){
+     console.log(record);
+     this.props.history.push({
+     pathname: "/customerDetails",
+       payload:record
+     })
+   }
 
   handleSearch = (value) => {
     axios.get('customer/findByLikeRealname', { params: { realname: value } })
@@ -130,6 +138,10 @@ class CustomerPage extends React.Component {
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
+      getCheckProps: record =>({
+        disabled: record.name === 'Disabled User',
+        name: record.name
+      })
     };
     let text = "是否删除"
     let columns = [{
@@ -147,9 +159,10 @@ class CustomerPage extends React.Component {
     },{
       title: "头像",
       dataIndex: "photo",
+      align: "center",
       render(text){
         return (
-          <img width={40} height={40} src={"http://10.84.130.41:5000/avatars/"+text}/>
+          <img width={40} height={40} src={"http://47.100.17.233:5000/avatars/"+text} alt='无法连接服务器'/>
         )
       }
     }, {
@@ -166,6 +179,8 @@ class CustomerPage extends React.Component {
 
             &nbsp;&nbsp;
             <Button size="small" onClick={this.toEdit.bind(this, record)}><Icon type='edit' /></Button>
+             &nbsp;&nbsp;
+            <Button size="small" onClick={this.toDetails.bind(this,record)}><Icon type='info'/></Button> 
           </div>
         )
       }

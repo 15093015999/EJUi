@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'dva';
 import styles from './IndexPage.css';
 import { Link } from 'dva/router';
-import { Layout, Menu, Breadcrumb, Icon, PageHeader, Button } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, PageHeader, } from 'antd';
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -96,33 +96,20 @@ class IndexPage extends React.Component {
                 </span>
               </Link>
             </Menu.Item>
-
-            <SubMenu
-              key="sub1"
-              title={
-                <span>
-                  <Icon type="user" />
-                  <span>其他</span>
-                </span>
-              }
-            >
-              <Menu.Item key="8">Tom</Menu.Item>
-              <Menu.Item key="9">Bill</Menu.Item>
-              <Menu.Item key="10">Alex</Menu.Item>
-            </SubMenu>
+            
           </Menu>
         </Sider>
         <Layout>
           <PageHeader
             onBack={() => window.history.back(-1)}
-            title="爱管不管"
-            extra={[
+            title="E洁家政服务平台"
+            /*extra={[
               // <Button key="3">Operation</Button>,
               // <Button key="2">Operation</Button>,
               <Button key="1" type="primary">
                 登录
             </Button>
-            ]}
+            ]}*/
           />
           <Content style={{ margin: '0 16px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>

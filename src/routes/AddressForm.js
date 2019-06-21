@@ -5,32 +5,32 @@ class AddressForm extends React.Component {
         super();
         this.options = [
             {
-                value: 'zhejiang',
-                label: 'Zhejiang',
+                value: '河南',
+                label: '河南',
                 children: [
                     {
-                        value: 'hangzhou',
-                        label: 'Hangzhou',
+                        value: '郑州',
+                        label: '郑州',
                         children: [
                             {
-                                value: 'xihu',
-                                label: 'West Lake',
+                                value: '中原区',
+                                label: '中原区',
                             },
                         ],
                     },
                 ],
             },
             {
-                value: 'jiangsu',
-                label: 'Jiangsu',
+                value: '广东',
+                label: '广东',
                 children: [
                     {
-                        value: 'nanjing',
-                        label: 'Nanjing',
+                        value: '珠海',
+                        label: '珠海',
                         children: [
                             {
-                                value: 'zhonghuamen',
-                                label: 'Zhong Hua Men',
+                                value: '拱北',
+                                label: '拱北',
                             },
                         ],
                     },
